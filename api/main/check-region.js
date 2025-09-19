@@ -1,31 +1,33 @@
-// pages/api/myregion.js
-import fetch from "node-fetch";
-
 export default async function handler(req, res) {
   const { uid, key } = req.query;
 
-  if (!uid || !key) {
-    return res.status(400).json({ success: false, message: "Please provide uid and key in query params" });
+  if (!uid) {
+    return res.status(400).json({
+      success: false,
+      message: "❌ Please provide uid in query params",
+      example: "/api/region?uid=8080519000&key=ZORVAXOxRG"
+    });
   }
 
+  // Agar user key ZORVAXOxRG de, internally DANGERxREGION use karenge
+  const validKey = key === "ZORVAXOxRG" ? "DANGERxREGION" : "DANGERxREGION";
+
   try {
-    // External API fetch
-    const response = await fetch(`https://danger-region-check.vercel.app/region?uid=${uid}&key=${key}`);
+    const response = await fetch(`https://danger-region-check.vercel.app/region?uid=${uid}&key=${validKey}`);
     const data = await response.json();
 
-    // Apni API format me convert karna
-    const formattedData = {
-      Channel: "@Suraj_Official_1",
-      api_credits: "@Zorvaxo",
-      id_level: data.level,
-      id_likes: data.likes,
-      id_nickname: data.nickname,
-      id_region: data.region,
-      uid: data.uid
+    // Credits change kar do
+    const modifiedJson = {
+      ...data,
+      credits: "t.me/zorvaxo"
     };
 
-    res.status(200).json(formattedData);
+    res.status(200).json(modifiedJson);
   } catch (error) {
-    res.status(500).json({ success: false, message: "Error fetching external API", error: error.message });
+    res.status(500).json({
+      success: false,
+      message: "❌ Error fetching external API",
+      error: error.message
+    });
   }
 }
