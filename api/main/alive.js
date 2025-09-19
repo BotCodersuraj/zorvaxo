@@ -9,15 +9,15 @@ export default async function handler(req, res) {
     });
   }
 
-  // Always use the correct external API key internally
   const validKey = "DANGERxINFO";
 
   try {
-    // Fetch data from external API
     const response = await fetch(`https://danger-info-alpha.vercel.app/accinfo?uid=${uid}&key=${validKey}`);
     const data = await response.json();
 
-    // Modify JSON according to your required format
+    // Agar externalData exist nahi karta to empty object use karo
+    const extData = data.externalData || {};
+
     const modifiedJson = {
       success: true,
       credits: "@Zorvaxo",
@@ -26,17 +26,17 @@ export default async function handler(req, res) {
         keyProvided: key || "ZORVAXOxINFO"
       },
       externalData: {
-        basicInfo: data.externalData.basicInfo,
-        clanBasicInfo: data.externalData.clanBasicInfo,
-        creditScoreInfo: data.externalData.creditScoreInfo,
-        credits: data.externalData.credits,
-        diamondCostRes: data.externalData.diamondCostRes,
-        petInfo: data.externalData.petInfo,
-        profileInfo: data.externalData.profileInfo,
-        region: data.externalData.region,
+        basicInfo: extData.basicInfo || {},
+        clanBasicInfo: extData.clanBasicInfo || {},
+        creditScoreInfo: extData.creditScoreInfo || {},
+        credits: extData.credits || "",
+        diamondCostRes: extData.diamondCostRes || {},
+        petInfo: extData.petInfo || {},
+        profileInfo: extData.profileInfo || {},
+        region: extData.region || "",
         socialInfo: {
-          ...data.externalData.socialInfo,
-          id_privacy: data.externalData.socialInfo.privacy,
+          ...(extData.socialInfo || {}),
+          id_privacy: extData.socialInfo?.privacy || "",
           privacy: undefined
         },
         telegram: {
