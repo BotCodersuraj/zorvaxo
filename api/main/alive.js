@@ -1,43 +1,32 @@
+// pages/api/myregion.js
+// pages/api/myregion.js
+import fetch from "node-fetch";
+
 export default async function handler(req, res) {
   const { uid, key } = req.query;
 
-  const validKey = "ZORVAXOxINFO"; // fixed key
-
-  if (!uid) {
-    return res.status(400).json({
-      success: false,
-      message: "❌ Please provide uid in query params",
-      example: "/api/main/alive?uid=1234567890&key=ZORVAXOxINFO"
-    });
-  }
-
-  if (key !== validKey) {
-    return res.status(403).json({
-      success: false,
-      message: "❌ Invalid key"
-    });
+  if (!uid || !key) {
+    return res.status(400).json({ success: false, message: "Please provide uid and key in query params" });
   }
 
   try {
-    // External API call with the fixed key
-    const response = await fetch(`https://danger-info-alpha.vercel.app/accinfo?uid=${uid}&key=${validKey}`);
+    // External API fetch
+    const response = await fetch(`https://danger-region-check.vercel.app/region?uid=${uid}&key=${key}`);
     const data = await response.json();
 
-    // "api" field hata do
-    const { api, ...filteredData } = data;
+    // Apni API format me convert karna
+    const formattedData = {
+      Channel: "@Suraj_Official_1",
+      api_credits: "@Zorvaxo",
+      id_level: data.level,
+      id_likes: data.likes,
+      id_nickname: data.nickname,
+      id_region: data.region,
+      uid: data.uid
+    };
 
-    res.status(200).json({
-      success: true,
-      message: "ZFF Info API working 🚀",
-      owner: "Suraj bhai",
-      yourQuery: { uid },
-      externalData: filteredData
-    });
+    res.status(200).json(formattedData);
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "❌ Error fetching external API",
-      error: error.message
-    });
+    res.status(500).json({ success: false, message: "Error fetching external API", error: error.message });
   }
 }
