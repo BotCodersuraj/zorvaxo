@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   }
 
   // Agar key galat hai
-  if (key !== "ZORVAXOxRG") {
+  if (key !== "ZORVAXOxREGION") {
     return res.status(403).json({
       success: false,
       credits: "t.me/zorvaxo",
