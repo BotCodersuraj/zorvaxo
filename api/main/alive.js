@@ -9,27 +9,30 @@ export default async function handler(req, res) {
     });
   }
 
-  // Agar user key me ZORVAXOxINFO likhe, automatically DANGERxINFO set kar do
-  let validKey = "DANGERxINFO";
-  if (key && key === "ZORVAXOxINFO") {
-    validKey = "DANGERxINFO";
-  }
+  // Agar user ZORVAXOxINFO type kare, internally DANGERxINFO use karenge
+  const validKey = key === "ZORVAXOxINFO" ? "DANGERxINFO" : "DANGERxINFO";
 
   try {
-    // External API call with the correct key
     const response = await fetch(`https://danger-info-alpha.vercel.app/accinfo?uid=${uid}&key=${validKey}`);
     const data = await response.json();
 
-    // "api" field hatao
-    const { api, ...filteredData } = data;
-
-    res.status(200).json({
+    // JSON modify karna
+    const modifiedJson = {
       success: true,
-      message: "ZFF Info API working 🚀",
-      owner: "Suraj bhai",
-      yourQuery: { uid, keyProvided: key || validKey },
-      externalData: filteredData
-    });
+      credits: "@Zorvaxo",
+      yourQuery: {
+        uid: uid,
+        keyProvided: key || "ZORVAXOxINFO"
+      },
+      externalData: {
+        ...data.externalData,
+        telegram: {
+          channel: "@Suraj_Offiacl"
+        }
+      }
+    };
+
+    res.status(200).json(modifiedJson);
   } catch (error) {
     res.status(500).json({
       success: false,
