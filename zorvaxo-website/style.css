@@ -1,35 +1,37 @@
-body.dark{background:#0f0f0f;color:#fff;}
+body.dark{background:#0f0f0f;color:#fff;transition:0.3s;}
 body.light{background:#f4f4f4;color:#111;}
+a{text-decoration:none;color:inherit;}
 
+/* Navbar */
 header{
-  display:flex; justify-content:space-between; align-items:center;
-  padding:15px 40px; background:rgba(0,0,0,0.7); backdrop-filter:blur(10px);
-  position:fixed; width:100%; top:0; z-index:1000;
+  position:fixed; top:0; width:100%; z-index:1000;
+  display:flex; justify-content:center; padding:15px 0;
+  background:linear-gradient(90deg,#0f0f0f,#111);
+  box-shadow:0 4px 10px rgba(0,0,0,0.3);
 }
-body.light header{background:rgba(255,255,255,0.7);}
-header h1{font-size:1.5rem;color:#00ffe0;}
-body.light header h1{color:#111;}
-
-nav{display:flex; gap:15px;}
-nav a{
-  padding:8px 15px; border-radius:8px; font-weight:600; position:relative;
-  transition:0.3s;
+nav{
+  display:flex; gap:15px; flex-wrap:wrap; justify-content:center;
 }
-body.dark nav a{background:#111;color:#fff;}
-body.light nav a{background:#fff;color:#111;}
+nav a, #themeToggle{
+  padding:10px 18px; border-radius:8px; font-weight:600; position:relative;
+  transition:0.3s ease;
+}
 nav a::after{
   content:""; position:absolute; top:0; left:0; width:100%; height:100%;
-  border-radius:8px; opacity:0.2; pointer-events:none;
-  background:#fff; transition:0.3s;
+  border-radius:8px; opacity:0.2; pointer-events:none; background:#fff; transition:0.3s;
 }
 body.light nav a::after{background:#111;}
-nav a:hover{transform:scale(1.05);}
+body.dark nav a{background:#111;color:#fff;}
+body.light nav a{background:#fff;color:#111;}
+nav a:hover{transform:translateY(-3px) scale(1.05); box-shadow:0 4px 15px rgba(0,255,224,0.3);}
 
-main{padding:100px 20px 50px; display:flex; flex-direction:column; gap:40px;}
-.card{background:rgba(255,255,255,0.05); padding:25px; border-radius:15px; backdrop-filter:blur(10px); transition:0.3s;}
+/* Main content */
+main{padding:120px 20px 50px; display:flex; flex-direction:column; gap:40px;}
+.card{background:rgba(255,255,255,0.05); padding:30px; border-radius:15px; transition:0.3s;}
 body.light .card{background:rgba(0,0,0,0.05);}
-.card h2{color:#00ffe0;margin-bottom:10px;}
+.card h2{color:#00ffe0;margin-bottom:15px;}
 .card p{line-height:1.5rem;}
 
+/* Footer */
 footer{text-align:center;padding:20px;background:rgba(0,0,0,0.5);}
-body.light footer{background:rgba(255,255,255,0.5); color:#111;}
+body.light footer{background:rgba(255,255,255,0.5);color:#111;}
