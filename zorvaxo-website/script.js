@@ -1,5 +1,5 @@
 function checkApi() {
-  fetch("/api/hello")
+  fetch("/api/main/ai-chatgpt?text=hello&key=ZORVAXOxAI")
     .then(res => res.json())
     .then(data => {
       document.getElementById("apiResponse").innerText = JSON.stringify(data);
