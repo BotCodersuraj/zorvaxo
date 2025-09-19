@@ -10,9 +10,12 @@ export default async function handler(req, res) {
   }
 
   try {
-    // External API call with query
+    // External API call
     const response = await fetch(`https://danger-info-alpha.vercel.app/accinfo?uid=${uid}&key=${key}`);
     const data = await response.json();
+
+    // "api" field ko hata do
+    const { api, ...filteredData } = data;
 
     // Apni API ka response
     res.status(200).json({
@@ -20,7 +23,7 @@ export default async function handler(req, res) {
       message: "ZFF Info API working 🚀",
       owner: "Suraj bhai",
       yourQuery: { uid, key },
-      externalData: data
+      externalData: filteredData  // "api" field nahi dikhega
     });
   } catch (error) {
     res.status(500).json({
