@@ -3,143 +3,148 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zorvaxo Website 🚀</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Zorvaxo Official 🚀</title>
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
   <style>
-    /* General Styles */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }
+    /* Google Font */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
     body {
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: #fff;
-      text-align: center;
-      padding: 0;
-      margin: 0;
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+      color: #fff; overflow-x: hidden; transition: background 0.5s, color 0.5s;
     }
+    a { color: #00ffe0; text-decoration: none; }
     header {
-      padding: 30px;
-      background: rgba(0,0,0,0.6);
-      box-shadow: 0 0 15px rgba(0,0,0,0.5);
-      animation: fadeInDown 1s ease-in-out;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 15px 40px; background: rgba(0,0,0,0.3); position: fixed; width: 100%; top: 0; z-index: 1000;
     }
-    header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-      color: #00ffcc;
+    header h1 { font-size: 1.5rem; color: #00ffe0; }
+    nav ul { display: flex; gap: 20px; list-style: none; }
+    nav a { font-weight: 600; transition: 0.3s; }
+    nav a:hover { color: #ff4ecd; }
+    .hero {
+      height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+      text-align: center; background: url('https://i.ibb.co/0Mtk0Wz/bg-space.jpg') no-repeat center/cover;
     }
-    header p {
-      font-size: 1.1rem;
-      color: #f0f0f0;
-    }
-
-    main {
-      padding: 20px;
-      display: grid;
-      gap: 20px;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      margin-top: 20px;
-    }
-
+    .hero h2 { font-size: 2.5rem; margin-bottom: 15px; animation: fadeIn 2s; }
+    .typing { font-size: 1.2rem; color: #00ffe0; font-weight: 600; height: 25px; }
+    main { padding: 100px 30px 50px; display: grid; gap: 40px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
     .card {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-      transition: transform 0.3s, box-shadow 0.3s;
-      animation: fadeInUp 1s ease-in-out;
+      backdrop-filter: blur(15px); background: rgba(255,255,255,0.05);
+      border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      transition: 0.3s; cursor: pointer;
     }
-    .card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 25px rgba(0,0,0,0.7);
-    }
-    .card h2 {
-      color: #00ffcc;
-      margin-bottom: 15px;
-    }
-
+    .card:hover { transform: translateY(-10px) scale(1.02); }
+    .card h3 { color: #00ffe0; margin-bottom: 10px; }
     button {
-      background: #00ffcc;
-      color: #000;
-      font-size: 1rem;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
+      padding: 10px 20px; border: none; border-radius: 10px; background: #00ffe0; font-weight: bold; cursor: pointer;
       transition: 0.3s;
     }
-    button:hover {
-      background: #00b894;
-      color: #fff;
-      transform: scale(1.05);
-    }
-
+    button:hover { background: #ff4ecd; color: #fff; }
     footer {
-      margin-top: 30px;
-      padding: 15px;
-      background: rgba(0,0,0,0.7);
-      font-size: 0.9rem;
+      text-align: center; padding: 20px; margin-top: 50px; background: rgba(0,0,0,0.6);
     }
-    footer a {
-      color: #00ffcc;
-      text-decoration: none;
-      font-weight: bold;
+    .theme-toggle {
+      cursor: pointer; padding: 8px 12px; border-radius: 8px; border: 1px solid #00ffe0; color: #00ffe0;
     }
-    footer a:hover {
-      text-decoration: underline;
-    }
-
-    /* Animations */
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    body.light { background: #f5f5f5; color: #222; }
+    body.light .card { background: rgba(0,0,0,0.05); }
+    body.light header { background: #fff; color: #000; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   </style>
 </head>
 <body>
+  <!-- Navbar -->
   <header>
-    <h1>🚀 Welcome to Zorvaxo Official Website 🚀</h1>
-    <p>Made with ❤️ by <b>@Zorvaxo</b></p>
+    <h1>Zorvaxo 🚀</h1>
+    <nav>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#apis">APIs</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><span class="theme-toggle" onclick="toggleTheme()">🌙</span></li>
+      </ul>
+    </nav>
   </header>
 
+  <!-- Hero Section -->
+  <section class="hero">
+    <h2 data-aos="fade-up">Welcome to <span style="color:#ff4ecd;">Zorvaxo Official</span></h2>
+    <div class="typing" id="typing"></div>
+  </section>
+
+  <!-- Main Section -->
   <main>
-    <!-- About Section -->
-    <div class="card">
-      <h2>👨‍💻 About @ZORVAXO</h2>
-      <p>Hello Dear, I Am <b>Zorvaxo (Suraj)</b> From Rajasthan Alwer Malakhera.  
-      I Am A Bot Coder, API Coder And Website Coder. Currently I’m a student at Naveen Public School.  
-      I Love Coding <b>Especially JavaScript</b>.  
-      Don’t Forget To Join My Telegram Channel 👉 <a href="https://t.me/Suraj_Official_1" target="_blank">@Suraj_official_1</a> 😁👾</p>
+    <!-- About -->
+    <div class="card" id="about" data-aos="zoom-in">
+      <h3>👨‍💻 About Me</h3>
+      <p>I am <b>Zorvaxo (Suraj)</b> from Rajasthan Alwer Malakhera.  
+      A Student + Bot Coder + API Developer + Web Developer.  
+      Passionate about <b>JavaScript</b> and ❤️ Coding.  
+      Join my Telegram 👉 <a href="https://t.me/Suraj_Official_1" target="_blank">@Suraj_Official_1</a></p>
     </div>
 
-    <!-- API Section -->
-    <div class="card">
-      <h2>🌐 All APIs</h2>
-      <p>Check Out All APIs Developed By Me 👇</p>
-      <button onclick="checkApi()">Click to Check APIs</button>
-      <div id="apiResult" style="margin-top:15px; font-size:0.95rem; color:#ddd;"></div>
+    <!-- APIs -->
+    <div class="card" id="apis" data-aos="flip-left">
+      <h3>🌐 My APIs</h3>
+      <button onclick="showApis()">Show APIs</button>
+      <div id="apiList" style="margin-top:15px;"></div>
+    </div>
+
+    <!-- Contact -->
+    <div class="card" id="contact" data-aos="flip-right">
+      <h3>📩 Contact Me</h3>
+      <form onsubmit="sendMsg(event)">
+        <input type="text" id="name" placeholder="Your Name" required style="padding:10px; width:90%; margin:8px;"><br>
+        <input type="email" id="email" placeholder="Your Email" required style="padding:10px; width:90%; margin:8px;"><br>
+        <textarea id="msg" placeholder="Message..." required style="padding:10px; width:90%; margin:8px; height:100px;"></textarea><br>
+        <button type="submit">Send</button>
+      </form>
+      <p id="status" style="margin-top:10px;"></p>
     </div>
   </main>
 
   <footer>
-    <p>✨ Creator : <a href="https://t.me/zorvaxo" target="_blank">@Zorvaxo</a></p>
+    <p>⚡ Created by <a href="https://t.me/zorvaxo" target="_blank">@Zorvaxo</a> | All Rights Reserved</p>
   </footer>
 
+  <!-- JS -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
   <script>
-    function checkApi() {
-      document.getElementById("apiResult").innerHTML = `
-        ✅ <b>ZFF Info API:</b> /api/zffinfo <br>
-        ✅ <b>DANGER Info API:</b> /api/dangerinfo <br>
-        ✅ <b>Alive Check API:</b> /api/alive <br>
-        🔗 Join for More: <a href="https://t.me/Suraj_Official_1" target="_blank">@Suraj_Official_1</a>
+    AOS.init();
+
+    // Typing Animation
+    const texts = ["I Am Zorvaxo 🚀", "Bot & API Developer 👨‍💻", "JavaScript Lover 💻", "Founder of APIs 🌐"];
+    let i=0, j=0, currentText="", isDeleting=false;
+    function type() {
+      currentText = texts[i];
+      document.getElementById("typing").innerHTML = currentText.substring(0, j);
+      if(!isDeleting && j < currentText.length) { j++; }
+      else if(isDeleting && j>0) { j--; }
+      else { isDeleting = !isDeleting; if(!isDeleting) i = (i+1)%texts.length; }
+      setTimeout(type, isDeleting ? 80 : 150);
+    }
+    type();
+
+    // API List
+    function showApis() {
+      document.getElementById("apiList").innerHTML = `
+        ✅ ZFF Info API → /api/zffinfo <br>
+        ✅ Danger Info API → /api/dangerinfo <br>
+        ✅ Alive Check API → /api/alive <br>
+        🔗 More on <a href="https://t.me/Suraj_Official_1" target="_blank">Telegram</a>
       `;
+    }
+
+    // Contact Form
+    function sendMsg(e) {
+      e.preventDefault();
+      document.getElementById("status").innerText = "✅ Message Sent (Demo)";
+    }
+
+    // Theme Toggle
+    function toggleTheme() {
+      document.body.classList.toggle("light");
     }
   </script>
 </body>
