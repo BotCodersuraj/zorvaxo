@@ -33,14 +33,20 @@ body {
   position: relative;
 }
 
+#topPanel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #eee;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  flex-wrap: wrap;
+}
+
 #themePanel {
   display: flex;
-  justify-content: center;
   gap: 10px;
-  padding: 10px;
   flex-wrap: wrap;
-  background: #eee;
-  border-bottom: 1px solid #ddd;
 }
 
 .themeOption {
@@ -53,6 +59,18 @@ body {
 }
 
 .themeOption:hover { transform: scale(1.2); }
+
+#myInfoBtn {
+  padding: 6px 12px;
+  border-radius: 10px;
+  background: #ff5722;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#myInfoBtn:hover { background: #e64a19; }
 
 #messages {
   flex: 1;
@@ -143,13 +161,16 @@ body {
 
 <div id="chatContainer">
 
-  <!-- Theme panel -->
-  <div id="themePanel">
-    <div class="themeOption" style="background:#6a11cb" onclick="setTheme('#6a11cb','#2575fc')"></div>
-    <div class="themeOption" style="background:#ff4b1f" onclick="setTheme('#ff4b1f','#ff9068')"></div>
-    <div class="themeOption" style="background:#11998e" onclick="setTheme('#11998e','#38ef7d')"></div>
-    <div class="themeOption" style="background:#fc4a1a" onclick="setTheme('#fc4a1a','#f7b733')"></div>
-    <div class="themeOption" style="background:#8e2de2" onclick="setTheme('#8e2de2','#4a00e0')"></div>
+  <!-- Top Panel -->
+  <div id="topPanel">
+    <div id="themePanel">
+      <div class="themeOption" style="background:#6a11cb" onclick="setTheme('#6a11cb','#2575fc')"></div>
+      <div class="themeOption" style="background:#ff4b1f" onclick="setTheme('#ff4b1f','#ff9068')"></div>
+      <div class="themeOption" style="background:#11998e" onclick="setTheme('#11998e','#38ef7d')"></div>
+      <div class="themeOption" style="background:#fc4a1a" onclick="setTheme('#fc4a1a','#f7b733')"></div>
+      <div class="themeOption" style="background:#8e2de2" onclick="setTheme('#8e2de2','#4a00e0')"></div>
+    </div>
+    <button id="myInfoBtn">My Info</button>
   </div>
 
   <div id="messages"></div>
@@ -175,6 +196,7 @@ const emojiBtn = document.getElementById("emojiBtn");
 const messages = document.getElementById("messages");
 const emojiPicker = document.getElementById("emojiPicker");
 const typingIndicator = document.getElementById("typingIndicator");
+const myInfoBtn = document.getElementById("myInfoBtn");
 
 // Scroll function
 function scrollToBottom() {
@@ -282,6 +304,14 @@ emojiPicker.addEventListener('emoji-click', e=>{ input.value += e.detail.unicode
 
 // Theme changer
 function setTheme(color1,color2){ document.body.style.background=`linear-gradient(to right, ${color1}, ${color2})`; }
+
+// My Info Button
+myInfoBtn.addEventListener('click', ()=>{
+    const savedMessages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
+    const lastMessage = savedMessages.length ? savedMessages[savedMessages.length - 1].text : 'No messages yet';
+    const info = `Name: Suraj Sharma\nUID: 8080519000\nKey: ZORVAXOxAI\nLast Message: "${lastMessage}"\nTotal Messages: ${savedMessages.length}`;
+    addMessage('bot', info);
+});
 
 // Event listeners
 sendBtn.addEventListener('click', sendMessage);
