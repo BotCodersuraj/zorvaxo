@@ -5,30 +5,142 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zorvaxo Website 🚀</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* General Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      text-align: center;
+      padding: 0;
+      margin: 0;
+    }
+    header {
+      padding: 30px;
+      background: rgba(0,0,0,0.6);
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      animation: fadeInDown 1s ease-in-out;
+    }
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: #00ffcc;
+    }
+    header p {
+      font-size: 1.1rem;
+      color: #f0f0f0;
+    }
+
+    main {
+      padding: 20px;
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      margin-top: 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      transition: transform 0.3s, box-shadow 0.3s;
+      animation: fadeInUp 1s ease-in-out;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.7);
+    }
+    .card h2 {
+      color: #00ffcc;
+      margin-bottom: 15px;
+    }
+
+    button {
+      background: #00ffcc;
+      color: #000;
+      font-size: 1rem;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #00b894;
+      color: #fff;
+      transform: scale(1.05);
+    }
+
+    footer {
+      margin-top: 30px;
+      padding: 15px;
+      background: rgba(0,0,0,0.7);
+      font-size: 0.9rem;
+    }
+    footer a {
+      color: #00ffcc;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Animations */
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
   <header>
-    <h1>Welcome to Zorvaxo Official Website 🚀</h1>
-    <p>Made BY @Zorvaxo ❤️</p>
+    <h1>🚀 Welcome to Zorvaxo Official Website 🚀</h1>
+    <p>Made with ❤️ by <b>@Zorvaxo</b></p>
   </header>
 
   <main>
+    <!-- About Section -->
     <div class="card">
-      <h2>About @ZORVAXO</h2>
-      <p>Hello Dear, I Am Zorvaxo (Suraj) From Rajasthan Alwer Malakhera. I Am A Bot Coder Api Coder And Website Coder. I Am A Student In Naveen Public School. I Love Coding <b>Especially JavaScript</b>. Dont Forget Join We Telegram Channel @Suraj_official_1 Thanks For Read. 😁👾</p>
+      <h2>👨‍💻 About @ZORVAXO</h2>
+      <p>Hello Dear, I Am <b>Zorvaxo (Suraj)</b> From Rajasthan Alwer Malakhera.  
+      I Am A Bot Coder, API Coder And Website Coder. Currently I’m a student at Naveen Public School.  
+      I Love Coding <b>Especially JavaScript</b>.  
+      Don’t Forget To Join My Telegram Channel 👉 <a href="https://t.me/Suraj_Official_1" target="_blank">@Suraj_official_1</a> 😁👾</p>
     </div>
 
+    <!-- API Section -->
     <div class="card">
-      <h2>All APIs</h2>
-      <button onclick="checkApi()">Click to Check ZORVAXO All APIs</button>
-      <p id=Join = @SURAJ_OFFICIAL_1 For More APIs And Codes.></p>
+      <h2>🌐 All APIs</h2>
+      <p>Check Out All APIs Developed By Me 👇</p>
+      <button onclick="checkApi()">Click to Check APIs</button>
+      <div id="apiResult" style="margin-top:15px; font-size:0.95rem; color:#ddd;"></div>
     </div>
   </main>
 
   <footer>
-    <p>Creator : <a href="https://t.me/zorvaxo">@Zorvaxo</a></p>
+    <p>✨ Creator : <a href="https://t.me/zorvaxo" target="_blank">@Zorvaxo</a></p>
   </footer>
 
-  <script src="script.js"></script>
+  <script>
+    function checkApi() {
+      document.getElementById("apiResult").innerHTML = `
+        ✅ <b>ZFF Info API:</b> /api/zffinfo <br>
+        ✅ <b>DANGER Info API:</b> /api/dangerinfo <br>
+        ✅ <b>Alive Check API:</b> /api/alive <br>
+        🔗 Join for More: <a href="https://t.me/Suraj_Official_1" target="_blank">@Suraj_Official_1</a>
+      `;
+    }
+  </script>
 </body>
 </html>
