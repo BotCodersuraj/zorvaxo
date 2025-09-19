@@ -2,7 +2,7 @@ export default function Home() {
   return (
     <div style={{
       fontFamily: "Arial, sans-serif",
-      background: "#0f172a",
+      backgroundColor: "#0f172a",
       color: "#f8fafc",
       minHeight: "100vh",
       padding: "20px"
