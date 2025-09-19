@@ -24,8 +24,7 @@ export default async function handler(req, res) {
     return res.status(400).json({
       success: false,
       owner: "@Zorvaxo",
-      message: "❌ Please provide a text query",
-      example: "/api/ask?text=Hello&key=ZORVAXOxAI"
+      message: "❌ Please provide a text query"
     });
   }
 
