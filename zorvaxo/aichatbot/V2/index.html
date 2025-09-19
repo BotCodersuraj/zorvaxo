@@ -87,17 +87,27 @@
   #voiceBtn:hover { background: #388e3c; }
   #emojiBtn:hover { background: #fb8c00; }
 
-  #themeSelector { display: flex; gap: 5px; padding: 10px; flex-wrap: wrap; }
+  /* Theme settings panel */
+  #themePanel {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    flex-wrap: wrap;
+    background: #eee;
+    border-bottom: 1px solid #ddd;
+  }
 
-  .themeBtn {
-    width: 25px; height: 25px;
+  .themeOption {
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
-    border: 2px solid #fff;
     cursor: pointer;
+    border: 2px solid #fff;
     transition: transform 0.2s;
   }
 
-  .themeBtn:hover { transform: scale(1.2); }
+  .themeOption:hover { transform: scale(1.2); }
 
   @keyframes fadeIn {
     from {opacity:0; transform: translateY(10px);}
@@ -108,16 +118,17 @@
 <body>
 
 <div id="chatContainer">
-  <div id="messages"></div>
 
-  <!-- Theme Buttons -->
-  <div id="themeSelector">
-    <div class="themeBtn" style="background:#6a11cb" onclick="setTheme('#6a11cb','#2575fc')"></div>
-    <div class="themeBtn" style="background:#ff4b1f" onclick="setTheme('#ff4b1f','#ff9068')"></div>
-    <div class="themeBtn" style="background:#11998e" onclick="setTheme('#11998e','#38ef7d')"></div>
-    <div class="themeBtn" style="background:#fc4a1a" onclick="setTheme('#fc4a1a','#f7b733')"></div>
-    <div class="themeBtn" style="background:#8e2de2" onclick="setTheme('#8e2de2','#4a00e0')"></div>
+  <!-- Theme settings panel -->
+  <div id="themePanel">
+    <div class="themeOption" style="background:#6a11cb" onclick="setTheme('#6a11cb','#2575fc')"></div>
+    <div class="themeOption" style="background:#ff4b1f" onclick="setTheme('#ff4b1f','#ff9068')"></div>
+    <div class="themeOption" style="background:#11998e" onclick="setTheme('#11998e','#38ef7d')"></div>
+    <div class="themeOption" style="background:#fc4a1a" onclick="setTheme('#fc4a1a','#f7b733')"></div>
+    <div class="themeOption" style="background:#8e2de2" onclick="setTheme('#8e2de2','#4a00e0')"></div>
   </div>
+
+  <div id="messages"></div>
 
   <div id="inputContainer">
     <button id="voiceBtn">🎤</button>
@@ -139,7 +150,7 @@ const emojiBtn = document.getElementById("emojiBtn");
 const messages = document.getElementById("messages");
 const emojiPicker = document.getElementById("emojiPicker");
 
-// Message with timestamp
+// Add message with timestamp
 function addMessage(sender, text) {
   const time = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
   const messageDiv = document.createElement('div');
@@ -149,7 +160,7 @@ function addMessage(sender, text) {
   messages.scrollTop = messages.scrollHeight;
 }
 
-// Typing effect
+// Typing effect for bot
 function typeEffect(element, text, delay=20){
   let i=0; element.textContent='';
   const timer = setInterval(()=>{ element.textContent += text.charAt(i); i++; if(i>=text.length) clearInterval(timer); }, delay);
