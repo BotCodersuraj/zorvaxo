@@ -4,19 +4,37 @@ export default async function handler(req, res) {
   if (!uid) {
     return res.status(400).json({
       success: false,
+      credits: "t.me/zorvaxo",
       message: "❌ Please provide uid in query params",
       example: "/api/region?uid=8080519000&key=ZORVAXOxRG"
     });
   }
 
-  // Agar user key ZORVAXOxRG de, internally DANGERxREGION use karenge
-  const validKey = key === "ZORVAXOxRG" ? "DANGERxREGION" : "DANGERxREGION";
+  // Key validation
+  if (key !== "ZORVAXOxRG") {
+    return res.status(403).json({
+      success: false,
+      credits: "t.me/zorvaxo",
+      message: "❌ Invalid API Key"
+    });
+  }
 
   try {
-    const response = await fetch(`https://danger-region-check.vercel.app/region?uid=${uid}&key=${validKey}`);
+    const response = await fetch(
+      `https://danger-region-check.vercel.app/region?uid=${uid}&key=DANGERxREGION`
+    );
     const data = await response.json();
 
-    // Credits change kar do
+    if (data.status === "error") {
+      return res.status(404).json({
+        success: false,
+        credits: "t.me/zorvaxo",
+        message: "❌ Player not found in this region",
+        status: "error"
+      });
+    }
+
+    // Agar data sahi mila toh modify karo
     const modifiedJson = {
       ...data,
       credits: "t.me/zorvaxo"
@@ -26,7 +44,8 @@ export default async function handler(req, res) {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "❌ Error fetching external API",
+      credits: "t.me/zorvaxo",
+      message: "❌ Something went wrong while fetching data",
       error: error.message
     });
   }
