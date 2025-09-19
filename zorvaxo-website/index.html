@@ -5,52 +5,65 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zorvaxo Official 🚀</title>
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <style>
-    /* Google Font */
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-    body {
-      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-      color: #fff; overflow-x: hidden; transition: background 0.5s, color 0.5s;
-    }
-    a { color: #00ffe0; text-decoration: none; }
+    /* Global */
+    * { margin:0; padding:0; box-sizing:border-box; font-family: 'Poppins', sans-serif; }
+    body { background:#0f0f0f; color:#fff; overflow-x:hidden; transition:0.4s ease; }
+    a { color:#00ffe0; text-decoration:none; }
+
+    /* Navbar */
     header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 15px 40px; background: rgba(0,0,0,0.3); position: fixed; width: 100%; top: 0; z-index: 1000;
+      display:flex; justify-content:space-between; align-items:center;
+      padding:20px 50px; position:fixed; top:0; width:100%; z-index:999;
+      backdrop-filter: blur(15px); background: rgba(0,0,0,0.3);
     }
-    header h1 { font-size: 1.5rem; color: #00ffe0; }
-    nav ul { display: flex; gap: 20px; list-style: none; }
-    nav a { font-weight: 600; transition: 0.3s; }
-    nav a:hover { color: #ff4ecd; }
+    header h1 { font-size:1.8rem; color:#00ffe0; }
+    nav ul { display:flex; gap:25px; list-style:none; }
+    nav a { font-weight:600; transition:0.3s; }
+    nav a:hover { color:#ff4ecd; }
+
+    /* Hero Section */
     .hero {
-      height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
-      text-align: center; background: url('https://i.ibb.co/0Mtk0Wz/bg-space.jpg') no-repeat center/cover;
+      height:100vh; display:flex; flex-direction:column;
+      justify-content:center; align-items:center; text-align:center;
+      position:relative; z-index:1;
     }
-    .hero h2 { font-size: 2.5rem; margin-bottom: 15px; animation: fadeIn 2s; }
-    .typing { font-size: 1.2rem; color: #00ffe0; font-weight: 600; height: 25px; }
-    main { padding: 100px 30px 50px; display: grid; gap: 40px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+    .hero h2 { font-size:3rem; margin-bottom:15px; }
+    .typing { font-size:1.3rem; font-weight:bold; color:#00ffe0; }
+
+    /* Particles Background */
+    #particles-js { position:absolute; width:100%; height:100%; top:0; left:0; z-index:0; }
+
+    /* Cards */
+    main { padding:120px 40px 60px; display:grid; gap:40px; grid-template-columns:repeat(auto-fit, minmax(320px,1fr)); }
     .card {
-      backdrop-filter: blur(15px); background: rgba(255,255,255,0.05);
-      border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      transition: 0.3s; cursor: pointer;
+      background: rgba(255,255,255,0.05); border-radius:20px; padding:30px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5); backdrop-filter: blur(20px);
+      transition:transform 0.4s ease; cursor:pointer;
     }
-    .card:hover { transform: translateY(-10px) scale(1.02); }
-    .card h3 { color: #00ffe0; margin-bottom: 10px; }
+    .card:hover { transform:translateY(-12px) scale(1.03); }
+    .card h3 { color:#00ffe0; margin-bottom:10px; }
+
     button {
-      padding: 10px 20px; border: none; border-radius: 10px; background: #00ffe0; font-weight: bold; cursor: pointer;
-      transition: 0.3s;
+      background:#00ffe0; color:#000; padding:10px 20px;
+      border:none; border-radius:10px; font-weight:bold; cursor:pointer;
+      transition:0.3s;
     }
-    button:hover { background: #ff4ecd; color: #fff; }
+    button:hover { background:#ff4ecd; color:#fff; }
+
+    /* Footer */
     footer {
-      text-align: center; padding: 20px; margin-top: 50px; background: rgba(0,0,0,0.6);
+      text-align:center; padding:20px; background:rgba(0,0,0,0.5);
+      margin-top:50px; font-size:0.9rem;
     }
-    .theme-toggle {
-      cursor: pointer; padding: 8px 12px; border-radius: 8px; border: 1px solid #00ffe0; color: #00ffe0;
-    }
-    body.light { background: #f5f5f5; color: #222; }
-    body.light .card { background: rgba(0,0,0,0.05); }
-    body.light header { background: #fff; color: #000; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    footer a { color:#00ffe0; font-weight:bold; }
+
+    /* Light Theme */
+    body.light { background:#f4f4f4; color:#111; }
+    body.light .card { background:rgba(0,0,0,0.05); }
+    body.light header { background:#fff; color:#111; }
   </style>
 </head>
 <body>
@@ -62,26 +75,27 @@
         <li><a href="#about">About</a></li>
         <li><a href="#apis">APIs</a></li>
         <li><a href="#contact">Contact</a></li>
-        <li><span class="theme-toggle" onclick="toggleTheme()">🌙</span></li>
+        <li><a href="javascript:void(0)" onclick="toggleTheme()">🌙</a></li>
       </ul>
     </nav>
   </header>
 
-  <!-- Hero Section -->
+  <!-- Hero -->
   <section class="hero">
-    <h2 data-aos="fade-up">Welcome to <span style="color:#ff4ecd;">Zorvaxo Official</span></h2>
+    <div id="particles-js"></div>
+    <h2 data-aos="fade-up">Welcome to <span style="color:#ff4ecd;">Zorvaxo</span> Official 🚀</h2>
     <div class="typing" id="typing"></div>
   </section>
 
-  <!-- Main Section -->
+  <!-- Main -->
   <main>
     <!-- About -->
     <div class="card" id="about" data-aos="zoom-in">
       <h3>👨‍💻 About Me</h3>
-      <p>I am <b>Zorvaxo (Suraj)</b> from Rajasthan Alwer Malakhera.  
-      A Student + Bot Coder + API Developer + Web Developer.  
-      Passionate about <b>JavaScript</b> and ❤️ Coding.  
-      Join my Telegram 👉 <a href="https://t.me/Suraj_Official_1" target="_blank">@Suraj_Official_1</a></p>
+      <p>I’m <b>Zorvaxo (Suraj)</b> from Rajasthan.  
+      Bot Coder • API Dev • Web Dev • Student at Naveen Public School.  
+      ❤️ Love for <b>JavaScript</b>.  
+      Join 👉 <a href="https://t.me/Suraj_Official_1" target="_blank">@Suraj_Official_1</a></p>
     </div>
 
     <!-- APIs -->
@@ -104,31 +118,31 @@
     </div>
   </main>
 
+  <!-- Footer -->
   <footer>
     <p>⚡ Created by <a href="https://t.me/zorvaxo" target="_blank">@Zorvaxo</a> | All Rights Reserved</p>
   </footer>
 
-  <!-- JS -->
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
   <script>
     AOS.init();
 
     // Typing Animation
-    const texts = ["I Am Zorvaxo 🚀", "Bot & API Developer 👨‍💻", "JavaScript Lover 💻", "Founder of APIs 🌐"];
-    let i=0, j=0, currentText="", isDeleting=false;
-    function type() {
-      currentText = texts[i];
-      document.getElementById("typing").innerHTML = currentText.substring(0, j);
-      if(!isDeleting && j < currentText.length) { j++; }
-      else if(isDeleting && j>0) { j--; }
-      else { isDeleting = !isDeleting; if(!isDeleting) i = (i+1)%texts.length; }
-      setTimeout(type, isDeleting ? 80 : 150);
-    }
-    type();
+    const texts = ["I Am Zorvaxo 🚀","Bot & API Developer 👨‍💻","JavaScript Lover 💻","Founder of APIs 🌐"];
+    let i=0, j=0, current="", del=false;
+    function type(){
+      current=texts[i];
+      document.getElementById("typing").innerHTML=current.substring(0,j);
+      if(!del && j<current.length) j++;
+      else if(del && j>0) j--;
+      else { del=!del; if(!del) i=(i+1)%texts.length; }
+      setTimeout(type, del?60:120);
+    } type();
 
     // API List
-    function showApis() {
-      document.getElementById("apiList").innerHTML = `
+    function showApis(){
+      document.getElementById("apiList").innerHTML=`
         ✅ ZFF Info API → /api/zffinfo <br>
         ✅ Danger Info API → /api/dangerinfo <br>
         ✅ Alive Check API → /api/alive <br>
@@ -136,16 +150,23 @@
       `;
     }
 
-    // Contact Form
-    function sendMsg(e) {
+    // Contact
+    function sendMsg(e){
       e.preventDefault();
-      document.getElementById("status").innerText = "✅ Message Sent (Demo)";
+      document.getElementById("status").innerText="✅ Message Sent (Demo)";
     }
 
     // Theme Toggle
-    function toggleTheme() {
-      document.body.classList.toggle("light");
-    }
+    function toggleTheme(){ document.body.classList.toggle("light"); }
+
+    // Particles.js
+    particlesJS("particles-js",{
+      "particles":{"number":{"value":80},"size":{"value":3},"move":{"speed":2},"line_linked":{"enable":true,"opacity":0.2},"color":{"value":"#00ffe0"}},
+      "interactivity":{"events":{"onhover":{"enable":true,"mode":"repulse"}}}
+    });
+
+    // GSAP Animations
+    gsap.from(".card",{y:50,opacity:0,duration:1,stagger:0.2,ease:"power2.out"});
   </script>
 </body>
 </html>
