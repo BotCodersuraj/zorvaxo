@@ -1,48 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zorvaxo AI Chat</title>
-<style>
-  body { font-family: Arial, sans-serif; display: flex; justify-content: center; margin-top: 50px; }
-  #chatContainer { width: 400px; border: 1px solid #ccc; padding: 20px; border-radius: 10px; }
-  #messages { height: 300px; overflow-y: auto; border: 1px solid #eee; padding: 10px; margin-bottom: 10px; }
-  .message { margin: 5px 0; }
-  .user { color: blue; }
-  .bot { color: green; }
-  input { width: 80%; padding: 8px; }
-  button { padding: 8px; }
-</style>
-</head>
-<body>
+let chatHistory = ""; // yahan store hoga saara conversation
 
-<div id="chatContainer">
-  <div id="messages"></div>
-  <input type="text" id="userInput" placeholder="Type your message...">
-  <button onclick="sendMessage()">Send</button>
-</div>
-
-<script>
 async function sendMessage() {
   const input = document.getElementById("userInput");
   const messages = document.getElementById("messages");
   const question = input.value.trim();
   if (!question) return;
 
-  // Show user's message
   messages.innerHTML += `<div class="message user">You: ${question}</div>`;
   input.value = "";
 
-  // Call your API
-  const response = await fetch(`https://zorvaxo.vercel.app/api/main/ai-chatgpt?text=${encodeURIComponent(question)}&key=ZORVAXOxAI`);
+  // Add current question to chat history
+  chatHistory += `You: ${question}\n`;
+
+  // Call API with full conversation
+  const response = await fetch(`https://zorvaxo.vercel.app/api/main/ai-chatgpt?text=${encodeURIComponent(chatHistory)}&key=ZORVAXOxAI`);
   const data = await response.json();
 
   // Show bot's reply
   messages.innerHTML += `<div class="message bot">Bot: ${data.answer}</div>`;
   messages.scrollTop = messages.scrollHeight;
-}
-</script>
 
-</body>
-</html>
+  // Add bot reply to history
+  chatHistory += `Bot: ${data.answer}\n`;
+}
