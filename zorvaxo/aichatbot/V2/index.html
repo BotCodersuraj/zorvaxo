@@ -6,120 +6,119 @@
 <title>Zorvaxo AI Ultra Chat 🤖</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/emoji-picker-element/1.5.3/emoji-picker.min.css">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
-  body {
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    transition: background 0.5s;
-    background: linear-gradient(to right, #6a11cb, #2575fc);
-  }
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  transition: background 0.5s;
+  background: linear-gradient(to right, #6a11cb, #2575fc);
+}
 
-  #chatContainer {
-    width: 100%;
-    max-width: 550px;
-    background: #fff;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
+#chatContainer {
+  width: 100%;
+  max-width: 550px;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
 
-  #messages {
-    flex: 1;
-    padding: 15px;
-    overflow-y: auto;
-    background: #f9f9f9;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
+#themePanel {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  flex-wrap: wrap;
+  background: #eee;
+  border-bottom: 1px solid #ddd;
+}
 
-  .message {
-    max-width: 80%;
-    padding: 10px 15px;
-    border-radius: 20px;
-    word-wrap: break-word;
-    position: relative;
-    animation: fadeIn 0.3s ease-in;
-  }
+.themeOption {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid #fff;
+  transition: transform 0.2s;
+}
 
-  .user { align-self: flex-end; background: #d1e7ff; color: #0b3d91; }
-  .bot { align-self: flex-start; background: #e2f7e1; color: #2e7d32; }
+.themeOption:hover { transform: scale(1.2); }
 
-  .timestamp { font-size: 10px; color: #888; margin-top: 3px; text-align: right; }
+#messages {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  background: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
-  #inputContainer {
-    display: flex;
-    border-top: 1px solid #ddd;
-    padding: 10px;
-    background: #fff;
-    align-items: center;
-    gap: 5px;
-  }
+.message {
+  max-width: 80%;
+  padding: 10px 15px;
+  border-radius: 20px;
+  word-wrap: break-word;
+  position: relative;
+  animation: fadeIn 0.3s ease-in;
+}
 
-  #userInput {
-    flex: 1;
-    padding: 10px 15px;
-    border-radius: 25px;
-    border: 1px solid #ccc;
-    outline: none;
-  }
+.user { align-self: flex-end; background: #d1e7ff; color: #0b3d91; }
+.bot { align-self: flex-start; background: #e2f7e1; color: #2e7d32; }
 
-  #sendBtn, #voiceBtn, #emojiBtn {
-    padding: 10px 15px;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    transition: 0.3s;
-  }
+.timestamp { font-size: 10px; color: #888; margin-top: 3px; text-align: right; }
 
-  #sendBtn { background: #2575fc; color: #fff; }
-  #voiceBtn { background: #4caf50; color: #fff; }
-  #emojiBtn { background: #ff9800; color: #fff; }
+#inputContainer {
+  display: flex;
+  border-top: 1px solid #ddd;
+  padding: 10px;
+  background: #fff;
+  align-items: center;
+  gap: 5px;
+}
 
-  #sendBtn:hover { background: #6a11cb; }
-  #voiceBtn:hover { background: #388e3c; }
-  #emojiBtn:hover { background: #fb8c00; }
+#userInput {
+  flex: 1;
+  padding: 10px 15px;
+  border-radius: 25px;
+  border: 1px solid #ccc;
+  outline: none;
+}
 
-  /* Theme settings panel */
-  #themePanel {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    padding: 10px;
-    flex-wrap: wrap;
-    background: #eee;
-    border-bottom: 1px solid #ddd;
-  }
+#sendBtn, #voiceBtn, #emojiBtn {
+  padding: 10px 15px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
-  .themeOption {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid #fff;
-    transition: transform 0.2s;
-  }
+#sendBtn { background: #2575fc; color: #fff; }
+#voiceBtn { background: #4caf50; color: #fff; }
+#emojiBtn { background: #ff9800; color: #fff; }
 
-  .themeOption:hover { transform: scale(1.2); }
+#sendBtn:hover { background: #6a11cb; }
+#voiceBtn:hover { background: #388e3c; }
+#emojiBtn:hover { background: #fb8c00; }
 
-  @keyframes fadeIn {
-    from {opacity:0; transform: translateY(10px);}
-    to {opacity:1; transform: translateY(0);}
-  }
+@keyframes fadeIn {
+  from {opacity:0; transform: translateY(10px);}
+  to {opacity:1; transform: translateY(0);}
+}
 </style>
 </head>
 <body>
 
 <div id="chatContainer">
 
-  <!-- Theme settings panel -->
+  <!-- Theme panel -->
   <div id="themePanel">
     <div class="themeOption" style="background:#6a11cb" onclick="setTheme('#6a11cb','#2575fc')"></div>
     <div class="themeOption" style="background:#ff4b1f" onclick="setTheme('#ff4b1f','#ff9068')"></div>
@@ -137,7 +136,7 @@
     <button id="sendBtn">➡️</button>
   </div>
 
-  <!-- Emoji Picker -->
+  <!-- Emoji picker -->
   <emoji-picker id="emojiPicker" style="display:none; position:absolute; bottom:70px; right:20px;"></emoji-picker>
 </div>
 
@@ -150,7 +149,13 @@ const emojiBtn = document.getElementById("emojiBtn");
 const messages = document.getElementById("messages");
 const emojiPicker = document.getElementById("emojiPicker");
 
-// Add message with timestamp
+// Load chat history
+window.onload = function() {
+  const savedMessages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
+  savedMessages.forEach(msg => addMessage(msg.sender, msg.text));
+}
+
+// Add message with timestamp & save
 function addMessage(sender, text) {
   const time = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
   const messageDiv = document.createElement('div');
@@ -158,6 +163,12 @@ function addMessage(sender, text) {
   messageDiv.innerHTML = `${sender==='user'?'You':'Bot'}: ${text}<div class="timestamp">${time}</div>`;
   messages.appendChild(messageDiv);
   messages.scrollTop = messages.scrollHeight;
+
+  // Save to localStorage
+  const savedMessages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
+  savedMessages.push({sender,text});
+  if(savedMessages.length > 50) savedMessages.shift(); // keep last 50 messages
+  localStorage.setItem('chatMessages', JSON.stringify(savedMessages));
 }
 
 // Typing effect for bot
@@ -186,6 +197,12 @@ async function sendMessage() {
     const ts=document.createElement('div'); ts.classList.add('timestamp');
     ts.textContent = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
     botDiv.appendChild(ts);
+
+    // Save bot response
+    const savedMessages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
+    savedMessages.push({sender:'bot', text:data.answer});
+    if(savedMessages.length > 50) savedMessages.shift();
+    localStorage.setItem('chatMessages', JSON.stringify(savedMessages));
   } catch(err) {
     botDiv.textContent='Bot: Something went wrong 😔';
   }
