@@ -1,10 +1,8 @@
-function checkApi() {
-  fetch("/api/main/ai-chatgpt?text=hello&key=ZORVAXOxAI")
-    .then(res => res.json())
-    .then(data => {
-      document.getElementById("apiResponse").innerText = JSON.stringify(data);
-    })
-    .catch(err => {
-      document.getElementById("apiResponse").innerText = "Error: " + err;
-    });
+const themeBtn = document.getElementById('themeToggle');
+if(themeBtn){
+  themeBtn.addEventListener('click', ()=>{
+    document.body.classList.toggle('dark');
+    document.body.classList.toggle('light');
+    themeBtn.textContent = document.body.classList.contains('dark') ? '🌙' : '☀️';
+  });
 }
