@@ -1,16 +1,17 @@
 export default async function handler(req, res) {
-  const { uid, key } = req.query; // query se uid aur key nikalenge
+  const { uid } = req.query; // sirf uid chahiye
+  const key = "ZORVAXOxINFO"; // default key set
 
-  if (!uid || !key) {
+  if (!uid) {
     return res.status(400).json({
       success: false,
-      message: "❌ Please provide uid and key in query params",
-      example: "/api/zffinfo?uid=8080519000&key=DANGERxINFO"
+      message: "❌ Please provide uid in query params",
+      example: "/api/zffinfo?uid=8080519000"
     });
   }
 
   try {
-    // External API call
+    // External API call with default key
     const response = await fetch(`https://danger-info-alpha.vercel.app/accinfo?uid=${uid}&key=${key}`);
     const data = await response.json();
 
@@ -22,7 +23,7 @@ export default async function handler(req, res) {
       success: true,
       message: "ZFF Info API working 🚀",
       owner: "Suraj bhai",
-      yourQuery: { uid, key },
+      yourQuery: { uid },
       externalData: filteredData  // "api" field nahi dikhega
     });
   } catch (error) {
