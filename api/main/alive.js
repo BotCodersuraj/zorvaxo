@@ -1,30 +1,37 @@
 export default async function handler(req, res) {
-  const { uid } = req.query; // sirf uid chahiye
-  const key = "ZORVAXOxINFO"; // default key set
+  const { uid, key } = req.query;
+
+  const validKey = "ZORVAXOxINFO"; // fixed key
 
   if (!uid) {
     return res.status(400).json({
       success: false,
       message: "❌ Please provide uid in query params",
-      example: "/api/zffinfo?uid=8080519000"
+      example: "/api/main/alive?uid=1234567890&key=ZORVAXOxINFO"
+    });
+  }
+
+  if (key !== validKey) {
+    return res.status(403).json({
+      success: false,
+      message: "❌ Invalid key"
     });
   }
 
   try {
-    // External API call with default key
-    const response = await fetch(`https://danger-info-alpha.vercel.app/accinfo?uid=${uid}&key=${key}`);
+    // External API call with the fixed key
+    const response = await fetch(`https://danger-info-alpha.vercel.app/accinfo?uid=${uid}&key=${validKey}`);
     const data = await response.json();
 
-    // "api" field ko hata do
+    // "api" field hata do
     const { api, ...filteredData } = data;
 
-    // Apni API ka response
     res.status(200).json({
       success: true,
       message: "ZFF Info API working 🚀",
       owner: "Suraj bhai",
       yourQuery: { uid },
-      externalData: filteredData  // "api" field nahi dikhega
+      externalData: filteredData
     });
   } catch (error) {
     res.status(500).json({
