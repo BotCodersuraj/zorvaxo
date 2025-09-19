@@ -9,15 +9,15 @@ export default async function handler(req, res) {
     });
   }
 
-  // Agar user key me ZORVAXOxINFO likhe, internally DANGERxINFO use karenge
+  // Always use the correct external API key internally
   const validKey = "DANGERxINFO";
 
   try {
-    // External API call
+    // Fetch data from external API
     const response = await fetch(`https://danger-info-alpha.vercel.app/accinfo?uid=${uid}&key=${validKey}`);
     const data = await response.json();
 
-    // JSON modify karna according to your desired format
+    // Modify JSON according to your required format
     const modifiedJson = {
       success: true,
       credits: "@Zorvaxo",
@@ -26,10 +26,17 @@ export default async function handler(req, res) {
         keyProvided: key || "ZORVAXOxINFO"
       },
       externalData: {
-        ...data.externalData,
+        basicInfo: data.externalData.basicInfo,
+        clanBasicInfo: data.externalData.clanBasicInfo,
+        creditScoreInfo: data.externalData.creditScoreInfo,
+        credits: data.externalData.credits,
+        diamondCostRes: data.externalData.diamondCostRes,
+        petInfo: data.externalData.petInfo,
+        profileInfo: data.externalData.profileInfo,
+        region: data.externalData.region,
         socialInfo: {
           ...data.externalData.socialInfo,
-          id_privacy: data.externalData.socialInfo.privacy, // rename privacy → id_privacy
+          id_privacy: data.externalData.socialInfo.privacy,
           privacy: undefined
         },
         telegram: {
