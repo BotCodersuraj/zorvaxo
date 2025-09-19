@@ -3,196 +3,110 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zorvaxo Official 🚀</title>
-  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <title>Zorvaxo Website 🚀</title>
   <style>
     /* Global */
-    * { margin:0; padding:0; box-sizing:border-box; font-family: 'Poppins', sans-serif; }
-    body { background:#0f0f0f; color:#fff; overflow-x:hidden; transition:0.4s ease; }
-    a { text-decoration:none; }
+    *{margin:0; padding:0; box-sizing:border-box; font-family:Poppins,sans-serif;}
+    body{background:#0f0f0f; color:#fff; transition:0.3s;}
+    a{text-decoration:none; color:inherit;}
 
     /* Navbar */
-    header {
+    header{
       display:flex; justify-content:space-between; align-items:center;
-      padding:18px 40px; position:fixed; top:0; width:100%; z-index:1000;
-      backdrop-filter: blur(15px); background: rgba(0,0,0,0.7);
-      transition:0.3s ease; box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      padding:15px 40px; background:rgba(0,0,0,0.7); backdrop-filter:blur(10px);
+      position:fixed; width:100%; top:0; z-index:1000;
     }
-    header.shrink { padding:10px 35px; }
-    header h1 { font-size:1.7rem; color:#00ffe0; }
-    nav ul { display:flex; gap:25px; list-style:none; }
-    nav a { 
-      font-weight:600; color:#fff; transition:0.3s;
-    }
-    nav a:hover { 
-      color:#00ffe0; text-shadow:0 0 10px #00ffe0;
-    }
-
-    /* Hero Section */
-    .hero {
-      height:100vh; display:flex; flex-direction:column;
-      justify-content:center; align-items:center; text-align:center;
-      position:relative; z-index:1;
-    }
-    .hero-box {
-      background: rgba(255,255,255,0.08); padding:40px; border-radius:20px;
-      backdrop-filter: blur(20px); max-width:650px;
-      animation: fadeIn 2s ease;
-      z-index:2;
-      position:relative;
-    }
-    .hero h2 { font-size:2.8rem; margin-bottom:15px; color:#00ffe0; }
-    .typing { font-size:1.3rem; font-weight:bold; color:#ff4ecd; }
-
-    /* Particles Background */
-    #particles-js { position:absolute; width:100%; height:100%; top:0; left:0; z-index:0; }
-
-    /* Cards Section */
-    main { padding:120px 40px 60px; display:grid; gap:40px; grid-template-columns:repeat(auto-fit, minmax(330px,1fr)); }
-    .card {
-      background: rgba(255,255,255,0.07); border-radius:20px; padding:30px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5); backdrop-filter: blur(20px);
-      transition:transform 0.4s ease; cursor:pointer;
-    }
-    .card:hover { transform:translateY(-10px) scale(1.02); }
-    .card h3 { color:#00ffe0; margin-bottom:10px; }
-
-    /* API List (always visible - no hide) */
-    .api-list p { margin:6px 0; color:#fff; }
-
-    /* Contact Form */
-    input, textarea {
-      width:90%; margin:8px 0; padding:10px; border-radius:10px; border:none;
-      outline:none; background:rgba(255,255,255,0.1); color:#fff;
-    }
-    button {
-      background:#00ffe0; color:#000; padding:12px 22px;
-      border:none; border-radius:10px; font-weight:bold; cursor:pointer;
+    header h1{font-size:1.5rem; color:#00ffe0;}
+    nav{display:flex; gap:15px;}
+    nav button{
+      padding:8px 15px; border:none; border-radius:8px;
+      cursor:pointer; font-weight:600; position:relative;
       transition:0.3s;
     }
-    button:hover { background:#ff4ecd; color:#fff; }
+    /* Overlay layer effect */
+    nav button::after{
+      content:""; position:absolute; top:0; left:0; width:100%; height:100%;
+      border-radius:8px; opacity:0.2; pointer-events:none;
+      background:#fff; transition:0.3s;
+    }
+    /* Button colors based on theme */
+    body.dark nav button{background:#111; color:#fff;}
+    body.dark nav button::after{background:#fff;}
+    body.light nav button{background:#fff; color:#111;}
+    body.light nav button::after{background:#111;}
+    nav button:hover{transform:scale(1.05);}
+
+    /* Main content */
+    main{padding:100px 20px 50px; display:flex; flex-direction:column; gap:40px;}
+    .card{background:rgba(255,255,255,0.05); padding:25px; border-radius:15px; backdrop-filter:blur(10px); transition:0.3s;}
+    body.light .card{background:rgba(0,0,0,0.05);}
+    .card h2{color:#00ffe0; margin-bottom:10px;}
+    .card p{line-height:1.5rem;}
 
     /* Footer */
-    footer {
-      text-align:center; padding:20px; background:rgba(0,0,0,0.5);
-      margin-top:50px; font-size:0.9rem;
+    footer{text-align:center; padding:20px; background:rgba(0,0,0,0.5); margin-top:20px;}
+    body.light footer{background:rgba(255,255,255,0.5); color:#111;}
+
+    /* Theme toggle button */
+    #themeToggle{
+      padding:8px 12px; border:none; border-radius:8px;
+      cursor:pointer; font-weight:600;
     }
-    footer a { color:#00ffe0; font-weight:bold; }
-
-    /* Light Theme */
-    body.light { background:#f4f4f4; color:#111; }
-    body.light .card { background:rgba(0,0,0,0.05); }
-    body.light header { background:#fff; color:#111; }
-    body.light .hero-box { background:rgba(0,0,0,0.05); }
-
-    @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
   </style>
 </head>
-<body>
-  <!-- Navbar -->
-  <header id="navbar">
+<body class="dark">
+
+  <header>
     <h1>Zorvaxo 🚀</h1>
     <nav>
-      <ul>
-        <li><a href="#about">About</a></li>
-        <li><a href="#apis">APIs</a></li>
-        <li><a href="#contact">Contact</a></li>
-        <li><a href="javascript:void(0)" onclick="toggleTheme()">🌙</a></li>
-      </ul>
+      <button onclick="scrollToSection('home')">Home</button>
+      <button onclick="scrollToSection('about')">About</button>
+      <button onclick="scrollToSection('apis')">APIs</button>
+      <button onclick="scrollToSection('contact')">Contact</button>
+      <button id="themeToggle">🌙</button>
     </nav>
   </header>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div id="particles-js"></div>
-    <div class="hero-box" data-aos="fade-up">
-      <h2>Welcome to Zorvaxo Official 🚀</h2>
-      <div class="typing" id="typing"></div>
-    </div>
-  </section>
-
-  <!-- Main -->
   <main>
-    <!-- About -->
-    <div class="card" id="about" data-aos="zoom-in">
-      <h3>👨‍💻 About Me</h3>
-      <p>I’m <b>Zorvaxo (Suraj)</b> from Rajasthan.  
-      Bot Coder • API Dev • Web Dev • Student at Naveen Public School.  
-      ❤️ Passion for <b>JavaScript</b>.  
-      Join 👉 <a href="https://t.me/Suraj_Official_1" target="_blank">@Suraj_Official_1</a></p>
+    <div class="card" id="home">
+      <h2>Welcome to Zorvaxo Website 🚀</h2>
+      <p>Made by @Zorvaxo ❤️</p>
     </div>
 
-    <!-- APIs -->
-    <div class="card" id="apis" data-aos="flip-left">
-      <h3>🌐 My APIs</h3>
-      <div class="api-list">
-        <p>✅ ZFF Info API → <code>/api/zffinfo</code></p>
-        <p>✅ Danger Info API → <code>/api/dangerinfo</code></p>
-        <p>✅ Alive Check API → <code>/api/alive</code></p>
-        <p>🔗 More on <a href="https://t.me/Suraj_Official_1" target="_blank">Telegram</a></p>
-      </div>
+    <div class="card" id="about">
+      <h2>About @ZORVAXO</h2>
+      <p>Hello Dear, I Am Zorvaxo (Suraj) From Rajasthan Alwer Malakhera. I Am A Bot Coder, API Coder, And Website Coder. I Am A Student In Naveen Public School. I Love Coding <b>Especially JavaScript</b>. Don't Forget Join Our Telegram Channel @Suraj_official_1. 😁👾</p>
     </div>
 
-    <!-- Contact -->
-    <div class="card" id="contact" data-aos="flip-right">
-      <h3>📩 Contact Me</h3>
-      <form onsubmit="sendMsg(event)">
-        <input type="text" id="name" placeholder="Your Name" required><br>
-        <input type="email" id="email" placeholder="Your Email" required><br>
-        <textarea id="msg" placeholder="Message..." required></textarea><br>
-        <button type="submit">Send</button>
-      </form>
-      <p id="status" style="margin-top:10px;"></p>
+    <div class="card" id="apis">
+      <h2>All APIs</h2>
+      <p>✅ ZFF Info API → /api/zffinfo</p>
+      <p>✅ Danger Info API → /api/dangerinfo</p>
+      <p>✅ Alive Check API → /api/alive</p>
+      <p>🔗 Join our Telegram: @SURAJ_OFFICIAL_1</p>
+    </div>
+
+    <div class="card" id="contact">
+      <h2>Contact Me</h2>
+      <p>Send me a message on Telegram or Email</p>
     </div>
   </main>
 
-  <!-- Footer -->
   <footer>
-    <p>⚡ Created by <a href="https://t.me/zorvaxo" target="_blank">@Zorvaxo</a> | All Rights Reserved</p>
+    <p>Creator : <a href="https://t.me/zorvaxo">@Zorvaxo</a></p>
   </footer>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
   <script>
-    AOS.init();
-
-    // Navbar shrink
-    window.addEventListener("scroll", ()=>{
-      const nav=document.getElementById("navbar");
-      if(window.scrollY>50) nav.classList.add("shrink"); else nav.classList.remove("shrink");
+    const themeBtn=document.getElementById('themeToggle');
+    themeBtn.addEventListener('click', ()=>{
+      document.body.classList.toggle('dark');
+      document.body.classList.toggle('light');
+      themeBtn.textContent = document.body.classList.contains('dark') ? '🌙' : '☀️';
     });
 
-    // Typing Animation
-    const texts=["I Am Zorvaxo 🚀","Bot & API Developer 👨‍💻","JavaScript Lover 💻","Founder of APIs 🌐"];
-    let i=0,j=0,cur="",del=false;
-    function type(){
-      cur=texts[i]; document.getElementById("typing").innerHTML=cur.substring(0,j);
-      if(!del && j<cur.length) j++;
-      else if(del && j>0) j--;
-      else { del=!del; if(!del) i=(i+1)%texts.length; }
-      setTimeout(type,del?60:120);
-    } type();
-
-    // Contact
-    function sendMsg(e){
-      e.preventDefault();
-      document.getElementById("status").innerText="✅ Message Sent (Demo)";
+    function scrollToSection(id){
+      document.getElementById(id).scrollIntoView({behavior:'smooth'});
     }
-
-    // Theme Toggle
-    function toggleTheme(){ document.body.classList.toggle("light"); }
-
-    // Particles.js
-    particlesJS("particles-js",{
-      "particles":{"number":{"value":70},"size":{"value":3},"move":{"speed":2},
-      "line_linked":{"enable":true,"opacity":0.2},"color":{"value":"#00ffe0"}},
-      "interactivity":{"events":{"onhover":{"enable":true,"mode":"repulse"}}}
-    });
-
-    // GSAP
-    gsap.from(".card",{y:50,opacity:0,duration:1,stagger:0.2,ease:"power2.out"});
   </script>
 </body>
 </html>
