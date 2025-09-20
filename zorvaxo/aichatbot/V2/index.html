@@ -21,10 +21,29 @@ body {
   position: relative;
 }
 
+/* Intro Overlay */
+#introOverlay {
+  position: fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: linear-gradient(45deg,#6a11cb,#2575fc);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:1000;
+  color:#fff;
+  font-size:2em;
+  font-weight:bold;
+  flex-direction:column;
+  opacity:0;
+  transform:scale(0.8);
+  transition:opacity 1s, transform 1s;
+}
+
 #chatContainer {
   width: 100%;
   max-width: 550px;
-  height: 90vh;
+  height: 90vh; 
   background: #fff;
   border-radius: 15px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.2);
@@ -123,9 +142,11 @@ body {
   cursor: pointer;
   transition: 0.3s;
 }
+
 #sendBtn { background: #2575fc; color: #fff; }
 #voiceBtn { background: #4caf50; color: #fff; }
 #emojiBtn { background: #ff9800; color: #fff; }
+
 #sendBtn:hover { background: #6a11cb; }
 #voiceBtn:hover { background: #388e3c; }
 #emojiBtn:hover { background: #fb8c00; }
@@ -137,42 +158,19 @@ body {
 
 /* Typing indicator */
 #typingIndicator {
+  display: none;
   font-style: italic;
   color: #555;
   margin-left: 5px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-.dot {
-  height: 8px;
-  width: 8px;
-  background-color: #555;
-  border-radius: 50%;
-  display: inline-block;
-  animation: blink 1s infinite;
-}
-.dot:nth-child(2) { animation-delay: 0.2s; }
-.dot:nth-child(3) { animation-delay: 0.4s; }
-@keyframes blink { 50% { opacity:0; } }
-
-/* Floating emojis */
-.floatingEmoji {
-  position: absolute;
-  font-size: 24px;
-  pointer-events: none;
-  animation: floatUp 2s ease forwards;
-}
-@keyframes floatUp {
-  0% {opacity:1; transform: translateY(0) scale(1);}
-  100% {opacity:0; transform: translateY(-80px) scale(1.5);}
 }
 </style>
 </head>
 <body>
 
-<div id="chatContainer">
+<!-- Intro Overlay -->
+<div id="introOverlay">Created by Suraj Sharma 🤖</div>
 
+<div id="chatContainer">
   <!-- Top Panel -->
   <div id="topPanel">
     <div id="themePanel">
@@ -187,9 +185,7 @@ body {
   </div>
 
   <div id="messages"></div>
-  <div id="typingIndicator" style="display:none;">
-    Bot is typing <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-  </div>
+  <div id="typingIndicator">Bot is typing...</div>
 
   <div id="inputContainer">
     <button id="voiceBtn">🎤</button>
@@ -202,8 +198,6 @@ body {
   <emoji-picker id="emojiPicker" style="display:none; position:absolute; bottom:70px; right:20px;"></emoji-picker>
 </div>
 
-<audio id="notifySound" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
-
 <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@1.5.3/dist/emoji-picker.min.js"></script>
 <script>
 const input = document.getElementById("userInput");
@@ -215,16 +209,28 @@ const emojiPicker = document.getElementById("emojiPicker");
 const typingIndicator = document.getElementById("typingIndicator");
 const myInfoBtn = document.getElementById("myInfoBtn");
 const resetBtn = document.getElementById("resetBtn");
-const notifySound = document.getElementById("notifySound");
+const introOverlay = document.getElementById("introOverlay");
 
+// Intro animation
+window.addEventListener('load', ()=>{
+  setTimeout(()=>{ introOverlay.style.opacity=1; introOverlay.style.transform='scale(1)'; },100);
+  setTimeout(()=>{
+    introOverlay.style.opacity=0; introOverlay.style.transform='scale(1.2)';
+    setTimeout(()=> introOverlay.style.display='none',1000);
+  },3000);
+});
+
+// Scroll function
 function scrollToBottom() { messages.scrollTop = messages.scrollHeight; }
 
+// Load chat history
 window.onload = function() {
   const savedMessages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
   savedMessages.forEach(msg => addMessage(msg.sender, msg.text, false));
   scrollToBottom();
 }
 
+// Add message
 function addMessage(sender, text, playSound=true) {
   const time = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
   const messageDiv = document.createElement('div');
@@ -232,12 +238,47 @@ function addMessage(sender, text, playSound=true) {
   messageDiv.innerHTML = `${sender==='user'?'You':'Bot'}: ${text}<div class="timestamp">${time}</div>`;
   messages.appendChild(messageDiv);
   scrollToBottom();
-  if(playSound) notifySound.play();
 
   const savedMessages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
   savedMessages.push({sender,text});
   if(savedMessages.length > 50) savedMessages.shift();
   localStorage.setItem('chatMessages', JSON.stringify(savedMessages));
+}
+
+// Send message
+async function sendMessage() {
+  const question = input.value.trim();
+  if(!question) return;
+  addMessage('user', question);
+  input.value='';
+
+  typingIndicator.style.display='block';
+
+  const botDiv = document.createElement('div');
+  botDiv.classList.add('message','bot');
+  messages.appendChild(botDiv);
+  scrollToBottom();
+
+  try {
+    const response = await fetch(`https://zorvaxo.vercel.app/api/main/ai-chatgpt?text=${encodeURIComponent(question)}&key=ZORVAXOxAI`);
+    const data = await response.json();
+    typingIndicator.style.display='none';
+    botDiv.textContent='';
+    let i=0;
+    const txt = data.answer;
+    const timer = setInterval(()=>{
+      botDiv.textContent += txt.charAt(i);
+      scrollToBottom();
+      i++;
+      if(i>=txt.length){ clearInterval(timer); }
+    },20);
+    const ts=document.createElement('div'); ts.classList.add('timestamp');
+    ts.textContent = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+    botDiv.appendChild(ts);
+  } catch(err) {
+    typingIndicator.style.display='none';
+    botDiv.textContent='Bot: Something went wrong 😔';
+  }
 }
 
 // Voice input
@@ -271,8 +312,10 @@ resetBtn.addEventListener('click', ()=>{
     }
 });
 
-// Send message with typing animation
-async function sendMessage() {
-  const question = input.value.trim();
-  if(!question) return;
-  addMessage('user',
+// Event listeners
+sendBtn.addEventListener('click', sendMessage);
+input.addEventListener('keydown', e=>{ if(e.key==='Enter') sendMessage(); });
+</script>
+
+</body>
+</html>
