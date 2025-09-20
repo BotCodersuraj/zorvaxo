@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DANGER INFO VIEWER</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #121212; color: #fff; padding: 20px; }
+  input, button { padding: 10px; margin: 5px 0; width: 100%; max-width: 300px; }
+  .info-box { background: #1f1f1f; padding: 15px; margin: 10px 0; border-radius: 8px; }
+</style>
+</head>
+<body>
+<h1>DANGER INFO VIEWER</h1>
+<input type="text" id="uid" placeholder="Enter UID">
+<button onclick="fetchInfo()">Get Info</button>
+
+<div id="result"></div>
+
+<script>
+async function fetchInfo() {
+    const uid = document.getElementById('uid').value.trim();
+    if (!uid) return alert("Please enter a UID!");
+    
+    const url = `https://danger-info-alpha.vercel.app/accinfo?uid=${uid}&key=DANGERxINFO`;
+    
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+        
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = `
+            <div class="info-box">
+                <h2>Basic Info</h2>
+                <p>Nickname: ${data.basicInfo.nickname}</p>
+                <p>Level: ${data.basicInfo.level}</p>
+                <p>Rank: ${data.basicInfo.rank}</p>
+                <p>Region: ${data.basicInfo.region}</p>
+                <p>Likes: ${data.basicInfo.liked}</p>
+                <p>Title ID: ${data.basicInfo.title}</p>
+            </div>
+
+            <div class="info-box">
+                <h2>Captain Info</h2>
+                <p>Nickname: ${data.captainBasicInfo.nickname}</p>
+                <p>Level: ${data.captainBasicInfo.level}</p>
+                <p>Rank: ${data.captainBasicInfo.rank}</p>
+            </div>
+
+            <div class="info-box">
+                <h2>Clan Info</h2>
+                <p>Clan Name: ${data.clanBasicInfo.clanName}</p>
+                <p>Clan Level: ${data.clanBasicInfo.clanLevel}</p>
+                <p>Members: ${data.clanBasicInfo.currentMembers}/${data.clanBasicInfo.maxMembers}</p>
+            </div>
+
+            <div class="info-box">
+                <h2>Social Info</h2>
+                <p>Telegram Channel: <a href="https://${data.telegram.channel}" target="_blank">${data.telegram.channel}</a></p>
+                <p>Gender: ${data.socialInfo.gender}</p>
+                <p>Language: ${data.socialInfo.language}</p>
+            </div>
+        `;
+        
+    } catch (err) {
+        alert("Error fetching data. UID may be invalid or API down.");
+        console.error(err);
+    }
+}
+</script>
+</body>
+</html>
