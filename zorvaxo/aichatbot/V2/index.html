@@ -24,7 +24,7 @@ body {
 #chatContainer {
   width: 100%;
   max-width: 550px;
-  height: 90vh; /* fixed height for scroll */
+  height: 90vh;
   background: #fff;
   border-radius: 15px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.2);
@@ -59,7 +59,6 @@ body {
   border: 2px solid #fff;
   transition: transform 0.2s;
 }
-
 .themeOption:hover { transform: scale(1.2); }
 
 #myInfoBtn, #resetBtn {
@@ -69,15 +68,13 @@ body {
   cursor: pointer;
   transition: 0.3s;
 }
-
 #myInfoBtn { background: #ff5722; color: #fff; }
 #myInfoBtn:hover { background: #e64a19; }
-
 #resetBtn { background: #f44336; color: #fff; }
 #resetBtn:hover { background: #d32f2f; }
 
 #messages {
-  flex: 1 1 auto; /* allow grow/shrink */
+  flex: 1 1 auto;
   padding: 15px;
   overflow-y: auto;
   background: #f9f9f9;
@@ -98,7 +95,7 @@ body {
 }
 
 .user { align-self: flex-end; background: #d1e7ff; color: #0b3d91; }
-.bot { align-self: flex-start; background: #e2f7e1; color: #2e7d32; }
+.bot { align-self: flex-start; background: #e2f7e1; color: #2e7d32; box-shadow: 0 0 10px rgba(46,125,50,0.3); }
 
 .timestamp { font-size: 10px; color: #888; margin-top: 3px; text-align: right; }
 
@@ -126,11 +123,9 @@ body {
   cursor: pointer;
   transition: 0.3s;
 }
-
 #sendBtn { background: #2575fc; color: #fff; }
 #voiceBtn { background: #4caf50; color: #fff; }
 #emojiBtn { background: #ff9800; color: #fff; }
-
 #sendBtn:hover { background: #6a11cb; }
 #voiceBtn:hover { background: #388e3c; }
 #emojiBtn:hover { background: #fb8c00; }
@@ -142,11 +137,24 @@ body {
 
 /* Typing indicator */
 #typingIndicator {
-  display: none;
   font-style: italic;
   color: #555;
   margin-left: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
+.dot {
+  height: 8px;
+  width: 8px;
+  background-color: #555;
+  border-radius: 50%;
+  display: inline-block;
+  animation: blink 1s infinite;
+}
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes blink { 50% { opacity:0; } }
 
 /* Floating emojis */
 .floatingEmoji {
@@ -155,7 +163,6 @@ body {
   pointer-events: none;
   animation: floatUp 2s ease forwards;
 }
-
 @keyframes floatUp {
   0% {opacity:1; transform: translateY(0) scale(1);}
   100% {opacity:0; transform: translateY(-80px) scale(1.5);}
@@ -180,7 +187,9 @@ body {
   </div>
 
   <div id="messages"></div>
-  <div id="typingIndicator">Bot is typing...</div>
+  <div id="typingIndicator" style="display:none;">
+    Bot is typing <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+  </div>
 
   <div id="inputContainer">
     <button id="voiceBtn">🎤</button>
@@ -193,6 +202,8 @@ body {
   <emoji-picker id="emojiPicker" style="display:none; position:absolute; bottom:70px; right:20px;"></emoji-picker>
 </div>
 
+<audio id="notifySound" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
+
 <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@1.5.3/dist/emoji-picker.min.js"></script>
 <script>
 const input = document.getElementById("userInput");
@@ -204,29 +215,24 @@ const emojiPicker = document.getElementById("emojiPicker");
 const typingIndicator = document.getElementById("typingIndicator");
 const myInfoBtn = document.getElementById("myInfoBtn");
 const resetBtn = document.getElementById("resetBtn");
+const notifySound = document.getElementById("notifySound");
 
-// Scroll function
-function scrollToBottom() {
-  messages.scrollTop = messages.scrollHeight;
-}
+function scrollToBottom() { messages.scrollTop = messages.scrollHeight; }
 
-// Load chat history
 window.onload = function() {
   const savedMessages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
-  savedMessages.forEach(msg => addMessage(msg.sender, msg.text));
+  savedMessages.forEach(msg => addMessage(msg.sender, msg.text, false));
   scrollToBottom();
 }
 
-// Add message + save
-function addMessage(sender, text) {
+function addMessage(sender, text, playSound=true) {
   const time = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
   const messageDiv = document.createElement('div');
   messageDiv.classList.add('message', sender);
   messageDiv.innerHTML = `${sender==='user'?'You':'Bot'}: ${text}<div class="timestamp">${time}</div>`;
   messages.appendChild(messageDiv);
   scrollToBottom();
-
-  if(sender==='bot' && (text.includes('😄') || text.includes('🎉'))) showFloatingEmoji('🎉');
+  if(playSound) notifySound.play();
 
   const savedMessages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
   savedMessages.push({sender,text});
@@ -234,72 +240,12 @@ function addMessage(sender, text) {
   localStorage.setItem('chatMessages', JSON.stringify(savedMessages));
 }
 
-// Typing effect with scroll
-function typeEffect(element, text, delay=20, callback){
-  let i=0; element.textContent='';
-  const timer = setInterval(()=>{
-    element.textContent += text.charAt(i);
-    scrollToBottom();
-    i++;
-    if(i>=text.length){
-      clearInterval(timer);
-      if(callback) callback();
-    }
-  }, delay);
-}
-
-// Floating emoji animation
-function showFloatingEmoji(emoji){
-  const e = document.createElement('div');
-  e.classList.add('floatingEmoji');
-  e.textContent = emoji;
-  e.style.left = Math.random()*400 + 'px';
-  document.body.appendChild(e);
-  setTimeout(()=> e.remove(), 2000);
-}
-
-// Send message
-async function sendMessage() {
-  const question = input.value.trim();
-  if(!question) return;
-  addMessage('user', question);
-  input.value='';
-
-  typingIndicator.style.display='block';
-
-  const botDiv = document.createElement('div');
-  botDiv.classList.add('message','bot');
-  messages.appendChild(botDiv);
-  scrollToBottom();
-
-  try {
-    const response = await fetch(`https://zorvaxo.vercel.app/api/main/ai-chatgpt?text=${encodeURIComponent(question)}&key=ZORVAXOxAI`);
-    const data = await response.json();
-    typingIndicator.style.display='none';
-    botDiv.textContent='';
-    typeEffect(botDiv,data.answer);
-    const ts=document.createElement('div'); ts.classList.add('timestamp');
-    ts.textContent = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-    botDiv.appendChild(ts);
-
-    const savedMessages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
-    savedMessages.push({sender:'bot', text:data.answer});
-    if(savedMessages.length > 50) savedMessages.shift();
-    localStorage.setItem('chatMessages', JSON.stringify(savedMessages));
-  } catch(err) {
-    typingIndicator.style.display='none';
-    botDiv.textContent='Bot: Something went wrong 😔';
-  }
-}
-
 // Voice input
 voiceBtn.addEventListener('click', ()=>{
   const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
   recognition.lang = 'en-US';
   recognition.start();
-  recognition.onresult = (event)=>{
-    input.value = event.results[0][0].transcript;
-  };
+  recognition.onresult = (event)=>{ input.value = event.results[0][0].transcript; };
 });
 
 // Emoji picker toggle
@@ -325,10 +271,8 @@ resetBtn.addEventListener('click', ()=>{
     }
 });
 
-// Event listeners
-sendBtn.addEventListener('click', sendMessage);
-input.addEventListener('keydown', e=>{ if(e.key==='Enter') sendMessage(); });
-</script>
-
-</body>
-</html>
+// Send message with typing animation
+async function sendMessage() {
+  const question = input.value.trim();
+  if(!question) return;
+  addMessage('user',
