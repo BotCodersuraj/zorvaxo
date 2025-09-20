@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -6,84 +7,189 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/emoji-picker-element/1.5.3/emoji-picker.min.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
-body{margin:0;font-family:'Roboto',sans-serif;background:linear-gradient(to right,#6a11cb,#2575fc);display:flex;justify-content:center;align-items:center;height:100vh;overflow:hidden;}
-#chatContainer{width:100%;max-width:550px;height:90vh;background:#fff;border-radius:15px;box-shadow:0 10px 25px rgba(0,0,0,0.2);display:flex;flex-direction:column;overflow:hidden;position:relative;}
-#topPanel{display:flex;justify-content:space-between;align-items:center;background:#eee;padding:10px;border-bottom:1px solid #ddd;flex-wrap:wrap;gap:5px;}
-#themePanel{display:flex;gap:10px;flex-wrap:wrap;}
-.themeOption{width:30px;height:30px;border-radius:50%;cursor:pointer;border:2px solid #fff;transition:0.2s;}
-.themeOption:hover{transform:scale(1.2);}
-#myInfoBtn,#resetBtn,#upgradeBtn,#premiumInfoBtn{padding:6px 12px;border-radius:10px;border:none;cursor:pointer;transition:0.3s;font-weight:bold;}
-#myInfoBtn{background:#ff5722;color:#fff;} #myInfoBtn:hover{background:#e64a19;}
-#resetBtn{background:#f44336;color:#fff;} #resetBtn:hover{background:#d32f2f;}
-#upgradeBtn{background:#ffeb3b;color:#000;box-shadow:0 0 10px #ffeb3b,0 0 20px #ffeb3b,0 0 30px #ffeb3b;animation:glowPulse 1.5s infinite alternate;} #upgradeBtn:hover{background:#fdd835;transform:scale(1.1);}
-#premiumInfoBtn{background:#2196f3;color:#fff;} #premiumInfoBtn:hover{background:#1976d2;}
-@keyframes glowPulse{0%{box-shadow:0 0 5px #ffeb3b,0 0 10px #ffeb3b,0 0 15px #ffeb3b;}50%{box-shadow:0 0 15px #ffeb3b,0 0 25px #ffeb3b,0 0 35px #ffeb3b;}100%{box-shadow:0 0 5px #ffeb3b,0 0 10px #ffeb3b,0 0 15px #ffeb3b;}}
-#messages{flex:1 1 auto;padding:15px;overflow-y:auto;background:#f9f9f9;display:flex;flex-direction:column;gap:10px;position:relative;scroll-behavior:smooth;}
-.message{max-width:80%;padding:10px 15px;border-radius:20px;word-wrap:break-word;position:relative;animation:fadeInSlide 0.4s ease forwards;}
-.user{align-self:flex-end;background:#d1e7ff;color:#0b3d91;}
-.bot{align-self:flex-start;background:#e2f7e1;color:#2e7d32;}
-.timestamp{font-size:10px;color:#888;margin-top:3px;text-align:right;}
-#inputContainer{display:flex;border-top:1px solid #ddd;padding:10px;background:#fff;align-items:center;gap:5px;}
-#userInput{flex:1;padding:10px 15px;border-radius:25px;border:1px solid #ccc;outline:none;}
-#sendBtn,#voiceBtn,#emojiBtn{padding:10px 15px;border-radius:50%;border:none;cursor:pointer;transition:0.3s;}
-#sendBtn{background:#2575fc;color:#fff;} #voiceBtn{background:#4caf50;color:#fff;} #emojiBtn{background:#ff9800;color:#fff;}
-#sendBtn:hover{background:#6a11cb;} #voiceBtn:hover{background:#388e3c;} #emojiBtn:hover{background:#fb8c00;}
-@keyframes fadeInSlide{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-#typingIndicator{display:none;font-style:italic;color:#555;margin-left:5px;}
-#premiumModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);justify-content:center;align-items:center;z-index:1000;}
-#premiumContent{background:#fff;padding:20px;border-radius:15px;max-width:400px;text-align:center;box-shadow:0 10px 25px rgba(0,0,0,0.3);}
-#premiumContent button{margin-top:10px;}
-#introModal{display:flex;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;flex-direction:column;color:#fff;font-size:1.5em;z-index:1000;}
-#introModal h1{animation:fadeInIntro 2s ease forwards;} @keyframes fadeInIntro{0%{opacity:0;transform:translateY(-50px);}100%{opacity:1;transform:translateY(0);}}
+
+body {
+  margin:0; padding:0;
+  font-family:'Roboto', sans-serif;
+  background:linear-gradient(to right,#6a11cb,#2575fc);
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+/* ===== INTRO ===== */
+#introOverlay {
+  position:fixed; top:0; left:0;
+  width:100%; height:100%;
+  background:#000;
+  z-index:1000;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  overflow:hidden;
+}
+#introCanvas { position:absolute; top:0; left:0; width:100%; height:100%; }
+#introText { color:#0ff; font-size:3em; font-weight:bold; letter-spacing:2px; text-align:center; text-shadow:0 0 10px #0ff,0 0 20px #0ff,0 0 30px #0ff; }
+#introSubtitle { color:#fff; font-size:1.5em; margin-top:20px; opacity:0; }
+
+/* ===== CHAT ===== */
+#chatContainer { width:100%; max-width:550px; height:90vh; background:#fff; border-radius:15px; box-shadow:0 10px 25px rgba(0,0,0,0.2); display:flex; flex-direction:column; overflow:hidden; position:relative; display:none;}
+#topPanel { display:flex; justify-content:space-between; align-items:center; background:#eee; padding:10px; border-bottom:1px solid #ddd; flex-wrap:wrap; gap:5px; }
+#themePanel { display:flex; gap:10px; flex-wrap:wrap; }
+.themeOption { width:30px; height:30px; border-radius:50%; cursor:pointer; border:2px solid #fff; transition:0.2s; }
+.themeOption:hover{ transform:scale(1.2); }
+#myInfoBtn,#resetBtn,#upgradeBtn { padding:6px 12px; border-radius:10px; border:none; cursor:pointer; transition:0.3s; }
+#myInfoBtn{ background:#ff5722; color:#fff; } #myInfoBtn:hover{ background:#e64a19; }
+#resetBtn{ background:#f44336; color:#fff; } #resetBtn:hover{ background:#d32f2f; }
+#upgradeBtn{ background:#ffeb3b; color:#000; } #upgradeBtn:hover{ background:#fdd835; }
+#messages{ flex:1 1 auto; padding:15px; overflow-y:auto; background:#f9f9f9; display:flex; flex-direction:column; gap:10px; position:relative; scroll-behavior:smooth; transition:background 0.5s; }
+.message{ max-width:80%; padding:10px 15px; border-radius:20px; word-wrap:break-word; position:relative; animation:fadeInSlide 0.4s ease forwards; }
+.user{ align-self:flex-end; background:#d1e7ff; color:#0b3d91; }
+.bot{ align-self:flex-start; background:#e2f7e1; color:#2e7d32; }
+.timestamp{ font-size:10px; color:#888; margin-top:3px; text-align:right; }
+#inputContainer{ display:flex; border-top:1px solid #ddd; padding:10px; background:#fff; align-items:center; gap:5px; }
+#userInput{ flex:1; padding:10px 15px; border-radius:25px; border:1px solid #ccc; outline:none; }
+#sendBtn,#voiceBtn,#emojiBtn{ padding:10px 15px; border-radius:50%; border:none; cursor:pointer; transition:0.3s; }
+#sendBtn{ background:#2575fc; color:#fff; } #voiceBtn{ background:#4caf50; color:#fff; } #emojiBtn{ background:#ff9800; color:#fff; }
+#sendBtn:hover{ background:#6a11cb; } #voiceBtn:hover{ background:#388e3c; } #emojiBtn:hover{ background:#fb8c00; }
+@keyframes fadeInSlide{ from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
+#typingIndicator{ display:none; font-style:italic; color:#555; margin-left:5px; }
 </style>
 </head>
-<body><div id="introModal">
-<h1>Made by Suraj Sharma 🚀</h1>
-<p>Welcome to Zorvaxo AI Ultra Chat Pro</p>
-<p id="introTimer">Intro ends in: 5s</p>
-</div><div id="chatContainer">
-<div id="topPanel">
-<div id="themePanel">
-<div class="themeOption" style="background:#6a11cb" onclick="setTheme('#6a11cb','#2575fc')"></div>
-<div class="themeOption" style="background:#ff4b1f" onclick="setTheme('#ff4b1f','#ff9068')"></div>
-<div class="themeOption" style="background:#11998e" onclick="setTheme('#11998e','#38ef7d')"></div>
-<div class="themeOption" style="background:#fc4a1a" onclick="setTheme('#fc4a1a','#f7b733')"></div>
-<div class="themeOption" style="background:#8e2de2" onclick="setTheme('#8e2de2','#4a00e0')"></div>
+<body>
+
+<!-- Intro Overlay -->
+<div id="introOverlay">
+  <canvas id="introCanvas"></canvas>
+  <div id="introText"></div>
+  <div id="introSubtitle">Created by Suraj Sharma 🤖</div>
 </div>
-<button id="myInfoBtn">My Info</button>
-<button id="resetBtn">Reset All</button>
-<button id="upgradeBtn">Upgrade ₹9</button>
-<button id="premiumInfoBtn">Premium Info</button>
+
+<!-- Chat -->
+<div id="chatContainer">
+  <div id="topPanel">
+    <div id="themePanel">
+      <div class="themeOption" style="background:#6a11cb" onclick="setTheme('#6a11cb','#2575fc')"></div>
+      <div class="themeOption" style="background:#ff4b1f" onclick="setTheme('#ff4b1f','#ff9068')"></div>
+      <div class="themeOption" style="background:#11998e" onclick="setTheme('#11998e','#38ef7d')"></div>
+      <div class="themeOption" style="background:#fc4a1a" onclick="setTheme('#fc4a1a','#f7b733')"></div>
+      <div class="themeOption" style="background:#8e2de2" onclick="setTheme('#8e2de2','#4a00e0')"></div>
+    </div>
+    <button id="myInfoBtn">My Info</button>
+    <button id="resetBtn">Reset All</button>
+    <button id="upgradeBtn">Upgrade ₹9</button>
+  </div>
+  <div id="messages"></div>
+  <div id="typingIndicator">Bot is typing...</div>
+  <div id="inputContainer">
+    <button id="voiceBtn">🎤</button>
+    <input type="text" id="userInput" placeholder="Type a message...">
+    <button id="emojiBtn">😊</button>
+    <button id="sendBtn">➡️</button>
+  </div>
+  <emoji-picker id="emojiPicker" style="display:none; position:absolute; bottom:70px; right:20px;"></emoji-picker>
 </div>
-<div id="messages"></div>
-<div id="typingIndicator">Bot is typing...</div>
-<div id="inputContainer">
-<button id="voiceBtn">🎤</button>
-<input type="text" id="userInput" placeholder="Type a message...">
-<button id="emojiBtn">😊</button>
-<button id="sendBtn">➡️</button>
-</div>
-<emoji-picker id="emojiPicker" style="display:none; position:absolute; bottom:70px; right:20px;"></emoji-picker>
-</div><div id="premiumModal">
-<div id="premiumContent">
-<h2>Premium Status</h2>
-<p id="premiumDetails"></p>
-<button onclick="closePremiumModal()">Close</button>
-</div>
-</div><script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@1.5.3/dist/emoji-picker.min.js"></script><script>
-const input=document.getElementById("userInput"),sendBtn=document.getElementById("sendBtn"),voiceBtn=document.getElementById("voiceBtn"),emojiBtn=document.getElementById("emojiBtn"),messages=document.getElementById("messages"),emojiPicker=document.getElementById("emojiPicker"),typingIndicator=document.getElementById("typingIndicator"),myInfoBtn=document.getElementById("myInfoBtn"),resetBtn=document.getElementById("resetBtn"),upgradeBtn=document.getElementById("upgradeBtn"),premiumInfoBtn=document.getElementById("premiumInfoBtn"),premiumModal=document.getElementById("premiumModal"),premiumDetails=document.getElementById("premiumDetails"),introModal=document.getElementById("introModal"),introTimer=document.getElementById("introTimer");
 
-let isPremium=JSON.parse(localStorage.getItem('isPremium')||'false');
-let premiumExpiry=localStorage.getItem('premiumExpiry')||null;
+<script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@1.5.3/dist/emoji-picker.min.js"></script>
+<script>
+// ===== Intro Animation =====
+const introOverlay=document.getElementById('introOverlay');
+const introText=document.getElementById('introText');
+const introSubtitle=document.getElementById('introSubtitle');
+let fullText="Zorvaxo AI Ultra Chat 🤖", i=0;
+function typeIntro(){
+  if(i<fullText.length){ introText.innerHTML+=fullText.charAt(i); i++; setTimeout(typeIntro,80);}
+  else{ introSubtitle.style.transition='opacity 1s'; introSubtitle.style.opacity=1; setTimeout(()=>{ fadeOutIntro(); },3000);}
+}
+function fadeOutIntro(){
+  introOverlay.style.transition='opacity 1s, transform 1s';
+  introOverlay.style.opacity=0; introOverlay.style.transform='scale(1.2)';
+  setTimeout(()=>{ introOverlay.style.display='none'; document.getElementById('chatContainer').style.display='flex'; loadChatHistory(); },1000);
+}
+// ===== Particle Background =====
+const canvas=document.getElementById('introCanvas');
+const ctx=canvas.getContext('2d');
+canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+const particles=[];
+for(let j=0;j<200;j++){
+  particles.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*2+1, dx:(Math.random()-0.5)*0.7, dy:(Math.random()-0.5)*0.7});
+}
+function drawParticles(){
+  ctx.fillStyle='rgba(0,0,0,0.2)'; ctx.fillRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p=>{
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle='#0ff'; ctx.fill();
+    p.x+=p.dx; p.y+=p.dy;
+    if(p.x<0||p.x>canvas.width)p.dx*=-1; if(p.y<0||p.y>canvas.height)p.dy*=-1;
+  });
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+window.onload=typeIntro;
 
-function scrollBottom(){messages.scrollTop=messages.scrollHeight;}
-function addMessage(sender,text){const time=new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});const msgDiv=document.createElement('div');msgDiv.classList.add('message',sender);msgDiv.innerHTML=`${sender==='user'?'You':'Bot'}: ${text}<div class='timestamp'>${time}</div>`;messages.appendChild(msgDiv);scrollBottom();const saved=JSON.parse(localStorage.getItem('chatMessages')||'[]');saved.push({sender,text});if(saved.length>50)saved.shift();localStorage.setItem('chatMessages',JSON.stringify(saved));}
+// ===== Chat Functionality =====
+const input=document.getElementById("userInput");
+const sendBtn=document.getElementById("sendBtn");
+const voiceBtn=document.getElementById("voiceBtn");
+const emojiBtn=document.getElementById("emojiBtn");
+const messages=document.getElementById("messages");
+const emojiPicker=document.getElementById("emojiPicker");
+const typingIndicator=document.getElementById("typingIndicator");
+const myInfoBtn=document.getElementById("myInfoBtn");
+const resetBtn=document.getElementById("resetBtn");
+const upgradeBtn=document.getElementById("upgradeBtn");
+let upgraded=false;
 
-function loadChatHistory(){const saved=JSON.parse(localStorage.getItem('chatMessages')||'[]');saved.forEach(m=>addMessage(m.sender,m.text));scrollBottom();}
-function startIntroCountdown(seconds){let remaining=seconds;introTimer.innerText=`Intro ends in: ${remaining}s`;const countdown=setInterval(()=>{remaining--;introTimer.innerText=`Intro ends in: ${remaining}s`;if(remaining<=0){clearInterval(countdown);introModal.style.display='none';}},1000);}
+function scrollToBottom(){messages.scrollTop=messages.scrollHeight;}
+function loadChatHistory(){ const savedMessages=JSON.parse(localStorage.getItem('chatMessages')||'[]'); savedMessages.forEach(msg=>addMessage(msg.sender,msg.text,false)); scrollToBottom();}
+function addMessage(sender,text,save=true){ const time=new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); const messageDiv=document.createElement('div'); messageDiv.classList.add('message',sender); messageDiv.innerHTML=`${sender==='user'?'You':'Bot'}: ${text}<div class="timestamp">${time}</div>`; messages.appendChild(messageDiv); scrollToBottom(); if(save){ const savedMessages=JSON.parse(localStorage.getItem('chatMessages')||'[]'); savedMessages.push({sender,text}); if(savedMessages.length>50) savedMessages.shift(); localStorage.setItem('chatMessages',JSON.stringify(savedMessages));}}
 
-window.onload=function(){loadChatHistory();startIntroCountdown(5);}
+async function sendMessage(){ 
+  const question=input.value.trim(); 
+  if(!question)return; 
+  addMessage('user',question); 
+  input.value=''; 
+  typingIndicator.style.display='block'; 
+  const botDiv=document.createElement('div'); 
+  botDiv.classList.add('message','bot'); 
+  messages.appendChild(botDiv); 
+  scrollToBottom(); 
+  try{ 
+    const response=await fetch(`https://zorvaxo.vercel.app/api/main/ai-chatgpt?text=${encodeURIComponent(question)}&key=ZORVAXOxAI`); 
+    const data=await response.json(); 
+    typingIndicator.style.display='none'; 
+    botDiv.textContent=''; 
+    let j=0; const txt=data.answer; 
+    const delay=upgraded?5:20; // faster response if upgraded
+    const timer=setInterval(()=>{ botDiv.textContent+=txt.charAt(j); scrollToBottom(); j++; if(j>=txt.length)clearInterval(timer); },delay); 
+    const ts=document.createElement('div'); ts.classList.add('timestamp'); ts.textContent=new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); botDiv.appendChild(ts); 
+  }catch(err){ typingIndicator.style.display='none'; botDiv.textContent='Bot: Something went wrong 😔';}
+}
 
-// Add remaining functional JS code for sendMessage, voice input, emoji, reset, upgrade, premium modal etc.
-</script></body>
+voiceBtn.addEventListener('click',()=>{ const recognition=new (window.SpeechRecognition||window.webkitSpeechRecognition)(); recognition.lang='en-US'; recognition.start(); recognition.onresult=(event)=>{ input.value=event.results[0][0].transcript; };});
+emojiBtn.addEventListener('click',()=>{ emojiPicker.style.display = emojiPicker.style.display==='none'?'block':'none'; });
+emojiPicker.addEventListener('emoji-click', e=>{ input.value+=e.detail.unicode; });
+function setTheme(c1,c2){ document.body.style.background=`linear-gradient(to right, ${c1}, ${c2})`; }
+myInfoBtn.addEventListener('click',()=>{ const savedMessages=JSON.parse(localStorage.getItem('chatMessages')||'[]'); const lastMessage=savedMessages.length?savedMessages[savedMessages.length-1].text:'No messages yet'; const info=`Name: Suraj Sharma\nUID: 8080519000\nKey: ZORVAXOxAI\nLast Message: "${lastMessage}"\nTotal Messages: ${savedMessages.length}`; addMessage('bot',info);});
+resetBtn.addEventListener('click',()=>{ if(confirm("Are you sure you want to reset all chats and settings?")){ localStorage.clear(); location.reload(); }});
+
+// ===== Upgrade Button =====
+upgradeBtn.addEventListener('click',()=>{
+  if(!upgraded){
+    if(confirm("Upgrade for ₹9 to enhance chat experience?")){
+      upgraded=true;
+      messages.style.background='linear-gradient(45deg,#ffe082,#ffca28)';
+      addMessage('bot','🎉 Congratulations! Your chat experience is now upgraded! Fast response + animated background applied.');
+    }
+  } else {
+    alert("You already upgraded! Enjoy the premium experience 😎");
+  }
+});
+
+sendBtn.addEventListener('click',sendMessage);
+input.addEventListener('keydown', e=>{ if(e.key==='Enter') sendMessage(); });
+</script>
+</body>
 </html>
