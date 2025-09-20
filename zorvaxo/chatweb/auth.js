@@ -1,21 +1,50 @@
-function showRegister(){ document.getElementById("loginForm").style.display="none"; document.getElementById("registerForm").style.display="block"; }
-function showLogin(){ document.getElementById("registerForm").style.display="none"; document.getElementById("loginForm").style.display="block"; }
+// Simple localStorage based auth
 
-function register(){
-  const user=document.getElementById("regUser").value;
-  const pass=document.getElementById("regPass").value;
-  if(!user||!pass){ alert("Fill all fields"); return; }
-  let users=JSON.parse(localStorage.getItem("users")||"[]");
-  if(users.find(u=>u.user===user)){ alert("Username already exists"); return; }
-  users.push({user,pass}); localStorage.setItem("users",JSON.stringify(users));
-  alert("Registered! Now login"); showLogin();
+function register() {
+  const username = document.getElementById("regUsername").value.trim();
+  const password = document.getElementById("regPassword").value.trim();
+  const msg = document.getElementById("msg");
+
+  if (!username || !password) {
+    msg.innerText = "⚠️ Please enter username & password!";
+    return;
+  }
+
+  // Check if user exists
+  if (localStorage.getItem("user_" + username)) {
+    msg.innerText = "❌ Username already taken!";
+    return;
+  }
+
+  // Save user
+  localStorage.setItem("user_" + username, JSON.stringify({ username, password }));
+  msg.innerText = "✅ Registered successfully! Now login.";
 }
 
-function login(){
-  const user=document.getElementById("loginUser").value;
-  const pass=document.getElementById("loginPass").value;
-  let users=JSON.parse(localStorage.getItem("users")||"[]");
-  let found=users.find(u=>u.user===user && u.pass===pass);
-  if(found){ localStorage.setItem("currentUser",user); location.href="chat.html"; }
-  else alert("Invalid login");
+function login() {
+  const username = document.getElementById("logUsername").value.trim();
+  const password = document.getElementById("logPassword").value.trim();
+  const msg = document.getElementById("msg");
+
+  if (!username || !password) {
+    msg.innerText = "⚠️ Enter username & password!";
+    return;
+  }
+
+  const stored = localStorage.getItem("user_" + username);
+  if (!stored) {
+    msg.innerText = "❌ User not found!";
+    return;
+  }
+
+  const user = JSON.parse(stored);
+  if (user.password === password) {
+    msg.innerText = "✅ Login successful! Redirecting...";
+    localStorage.setItem("activeUser", username);
+    setTimeout(() => {
+      window.location.href = "chat.html";
+    }, 1000);
+  } else {
+    msg.innerText = "❌ Wrong password!";
+  }
 }
