@@ -1,52 +1,72 @@
-let currentUser=localStorage.getItem("currentUser");
-if(!currentUser) location.href="index.html";
+let activeUser = localStorage.getItem("activeUser");
+if (!activeUser) {
+  window.location.href = "index.html"; // Force login
+}
 
-let chatWith=null;
+const userListEl = document.getElementById("userList");
+const chatHeader = document.getElementById("chatHeader");
+const messagesEl = document.getElementById("messages");
+let currentChatUser = null;
 
-function loadUsers(){
-  const users=JSON.parse(localStorage.getItem("users")||"[]");
-  const list=document.getElementById("userList");
-  list.innerHTML="";
-  users.forEach(u=>{
-    if(u.user!==currentUser){
-      const li=document.createElement("li");
-      li.textContent=u.user;
-      li.onclick=()=>openChat(u.user);
-      list.appendChild(li);
+// Load all users
+function loadUsers() {
+  userListEl.innerHTML = "";
+  for (let i = 0; i < localStorage.length; i++) {
+    let key = localStorage.key(i);
+    if (key.startsWith("user_")) {
+      let user = JSON.parse(localStorage.getItem(key));
+      if (user.username !== activeUser) {
+        let li = document.createElement("li");
+        li.innerText = user.username;
+        li.onclick = () => openChat(user.username);
+        userListEl.appendChild(li);
+      }
     }
-  });
+  }
 }
 
-function openChat(user){
-  chatWith=user;
-  document.getElementById("chatHeader").textContent="Chat with "+user;
+function openChat(username) {
+  currentChatUser = username;
+  chatHeader.innerText = `Chat with ${username}`;
   loadMessages();
 }
 
-function loadMessages(){
-  const allChats=JSON.parse(localStorage.getItem("messages")||"[]");
-  const msgs=allChats.filter(m=>(m.from===currentUser&&m.to===chatWith)||(m.from===chatWith&&m.to===currentUser));
-  const box=document.getElementById("chatMessages");
-  box.innerHTML="";
-  msgs.forEach(m=>{
-    const div=document.createElement("div");
-    div.className="message "+(m.from===currentUser?"from-me":"from-them");
-    div.textContent=m.text;
-    box.appendChild(div);
+function loadMessages() {
+  messagesEl.innerHTML = "";
+  if (!currentChatUser) return;
+
+  let chatKey = `chat_${activeUser}_${currentChatUser}`;
+  let reverseKey = `chat_${currentChatUser}_${activeUser}`;
+
+  let msgs = JSON.parse(localStorage.getItem(chatKey)) || [];
+  let msgs2 = JSON.parse(localStorage.getItem(reverseKey)) || [];
+
+  let allMsgs = [...msgs, ...msgs2].sort((a, b) => a.time - b.time);
+
+  allMsgs.forEach(m => {
+    let div = document.createElement("div");
+    div.className = m.from === activeUser ? "msg right" : "msg left";
+    div.innerText = `${m.from}: ${m.text}`;
+    messagesEl.appendChild(div);
   });
-  box.scrollTop=box.scrollHeight;
+
+  messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
-function sendMessage(){
-  const text=document.getElementById("chatText").value.trim();
-  if(!text||!chatWith) return;
-  let allChats=JSON.parse(localStorage.getItem("messages")||"[]");
-  allChats.push({from:currentUser,to:chatWith,text});
-  localStorage.setItem("messages",JSON.stringify(allChats));
-  document.getElementById("chatText").value="";
+function sendMessage() {
+  if (!currentChatUser) return;
+  let input = document.getElementById("msgInput");
+  let text = input.value.trim();
+  if (!text) return;
+
+  let chatKey = `chat_${activeUser}_${currentChatUser}`;
+  let msgs = JSON.parse(localStorage.getItem(chatKey)) || [];
+
+  msgs.push({ from: activeUser, to: currentChatUser, text, time: Date.now() });
+  localStorage.setItem(chatKey, JSON.stringify(msgs));
+
+  input.value = "";
   loadMessages();
 }
-
-function logout(){ localStorage.removeItem("currentUser"); location.href="index.html"; }
 
 loadUsers();
