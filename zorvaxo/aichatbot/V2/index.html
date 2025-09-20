@@ -41,6 +41,7 @@ body {
   padding: 10px;
   border-bottom: 1px solid #ddd;
   flex-wrap: wrap;
+  gap: 5px;
 }
 
 #themePanel {
@@ -60,17 +61,19 @@ body {
 
 .themeOption:hover { transform: scale(1.2); }
 
-#myInfoBtn {
+#myInfoBtn, #resetBtn {
   padding: 6px 12px;
   border-radius: 10px;
-  background: #ff5722;
-  color: #fff;
   border: none;
   cursor: pointer;
   transition: 0.3s;
 }
 
+#myInfoBtn { background: #ff5722; color: #fff; }
 #myInfoBtn:hover { background: #e64a19; }
+
+#resetBtn { background: #f44336; color: #fff; }
+#resetBtn:hover { background: #d32f2f; }
 
 #messages {
   flex: 1;
@@ -171,6 +174,7 @@ body {
       <div class="themeOption" style="background:#8e2de2" onclick="setTheme('#8e2de2','#4a00e0')"></div>
     </div>
     <button id="myInfoBtn">My Info</button>
+    <button id="resetBtn">Reset All</button>
   </div>
 
   <div id="messages"></div>
@@ -197,6 +201,7 @@ const messages = document.getElementById("messages");
 const emojiPicker = document.getElementById("emojiPicker");
 const typingIndicator = document.getElementById("typingIndicator");
 const myInfoBtn = document.getElementById("myInfoBtn");
+const resetBtn = document.getElementById("resetBtn");
 
 // Scroll function
 function scrollToBottom() {
@@ -311,6 +316,14 @@ myInfoBtn.addEventListener('click', ()=>{
     const lastMessage = savedMessages.length ? savedMessages[savedMessages.length - 1].text : 'No messages yet';
     const info = `Name: Suraj Sharma\nUID: 8080519000\nKey: ZORVAXOxAI\nLast Message: "${lastMessage}"\nTotal Messages: ${savedMessages.length}`;
     addMessage('bot', info);
+});
+
+// Reset All Button
+resetBtn.addEventListener('click', ()=>{
+    if(confirm("Are you sure you want to reset all chats and settings?")) {
+        localStorage.clear();
+        location.reload();
+    }
 });
 
 // Event listeners
