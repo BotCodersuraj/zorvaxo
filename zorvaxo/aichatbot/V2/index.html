@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/emoji-picker-element/1.5.3/emoji-picker.min.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
-body{margin:0;padding:0;font-family:'Roboto',sans-serif;background:linear-gradient(to right,#6a11cb,#2575fc);overflow:hidden;display:flex;justify-content:center;align-items:center;height:100vh;}
+body{margin:0;font-family:'Roboto',sans-serif;background:linear-gradient(to right,#6a11cb,#2575fc);display:flex;justify-content:center;align-items:center;height:100vh;overflow:hidden;}
 #chatContainer{width:100%;max-width:550px;height:90vh;background:#fff;border-radius:15px;box-shadow:0 10px 25px rgba(0,0,0,0.2);display:flex;flex-direction:column;overflow:hidden;position:relative;}
 #topPanel{display:flex;justify-content:space-between;align-items:center;background:#eee;padding:10px;border-bottom:1px solid #ddd;flex-wrap:wrap;gap:5px;}
 #themePanel{display:flex;gap:10px;flex-wrap:wrap;}
@@ -15,8 +15,7 @@ body{margin:0;padding:0;font-family:'Roboto',sans-serif;background:linear-gradie
 #myInfoBtn,#resetBtn,#upgradeBtn,#premiumInfoBtn{padding:6px 12px;border-radius:10px;border:none;cursor:pointer;transition:0.3s;font-weight:bold;}
 #myInfoBtn{background:#ff5722;color:#fff;} #myInfoBtn:hover{background:#e64a19;}
 #resetBtn{background:#f44336;color:#fff;} #resetBtn:hover{background:#d32f2f;}
-#upgradeBtn{background:#ffeb3b;color:#000;box-shadow:0 0 10px #ffeb3b,0 0 20px #ffeb3b,0 0 30px #ffeb3b;animation:glowPulse 1.5s infinite alternate;position:relative;}
-#upgradeBtn:hover{background:#fdd835;transform:scale(1.1);}
+#upgradeBtn{background:#ffeb3b;color:#000;box-shadow:0 0 10px #ffeb3b,0 0 20px #ffeb3b,0 0 30px #ffeb3b;animation:glowPulse 1.5s infinite alternate;} #upgradeBtn:hover{background:#fdd835;transform:scale(1.1);}
 #premiumInfoBtn{background:#2196f3;color:#fff;} #premiumInfoBtn:hover{background:#1976d2;}
 @keyframes glowPulse{0%{box-shadow:0 0 5px #ffeb3b,0 0 10px #ffeb3b,0 0 15px #ffeb3b;}50%{box-shadow:0 0 15px #ffeb3b,0 0 25px #ffeb3b,0 0 35px #ffeb3b;}100%{box-shadow:0 0 5px #ffeb3b,0 0 10px #ffeb3b,0 0 15px #ffeb3b;}}
 #messages{flex:1 1 auto;padding:15px;overflow-y:auto;background:#f9f9f9;display:flex;flex-direction:column;gap:10px;position:relative;scroll-behavior:smooth;}
@@ -81,11 +80,10 @@ function scrollBottom(){messages.scrollTop=messages.scrollHeight;}
 function addMessage(sender,text){const time=new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});const msgDiv=document.createElement('div');msgDiv.classList.add('message',sender);msgDiv.innerHTML=`${sender==='user'?'You':'Bot'}: ${text}<div class='timestamp'>${time}</div>`;messages.appendChild(msgDiv);scrollBottom();const saved=JSON.parse(localStorage.getItem('chatMessages')||'[]');saved.push({sender,text});if(saved.length>50)saved.shift();localStorage.setItem('chatMessages',JSON.stringify(saved));}
 
 function loadChatHistory(){const saved=JSON.parse(localStorage.getItem('chatMessages')||'[]');saved.forEach(m=>addMessage(m.sender,m.text));scrollBottom();}
-
 function startIntroCountdown(seconds){let remaining=seconds;introTimer.innerText=`Intro ends in: ${remaining}s`;const countdown=setInterval(()=>{remaining--;introTimer.innerText=`Intro ends in: ${remaining}s`;if(remaining<=0){clearInterval(countdown);introModal.style.display='none';}},1000);}
 
 window.onload=function(){loadChatHistory();startIntroCountdown(5);}
 
-// Rest of chat + premium code here (sendMessage, typeEffect, voice input, emoji picker, theme changer, upgrade logic, reset logic, premium modal etc.)
+// Add remaining functional JS code for sendMessage, voice input, emoji, reset, upgrade, premium modal etc.
 </script></body>
 </html>
