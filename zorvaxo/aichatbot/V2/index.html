@@ -7,56 +7,32 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/emoji-picker-element/1.5.3/emoji-picker.min.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
-
-body {
-  margin:0; padding:0;
-  font-family:'Roboto', sans-serif;
-  background:linear-gradient(to right,#6a11cb,#2575fc);
-  overflow:hidden;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-}
-
-/* ===== INTRO ===== */
-#introOverlay {
-  position:fixed; top:0; left:0;
-  width:100%; height:100%;
-  background:#000;
-  z-index:1000;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-  overflow:hidden;
-}
-#introCanvas { position:absolute; top:0; left:0; width:100%; height:100%; }
-#introText { color:#0ff; font-size:3em; font-weight:bold; letter-spacing:2px; text-align:center; text-shadow:0 0 10px #0ff,0 0 20px #0ff,0 0 30px #0ff; }
-#introSubtitle { color:#fff; font-size:1.5em; margin-top:20px; opacity:0; }
-
-/* ===== CHAT ===== */
-#chatContainer { width:100%; max-width:550px; height:90vh; background:#fff; border-radius:15px; box-shadow:0 10px 25px rgba(0,0,0,0.2); display:flex; flex-direction:column; overflow:hidden; position:relative; display:none;}
-#topPanel { display:flex; justify-content:space-between; align-items:center; background:#eee; padding:10px; border-bottom:1px solid #ddd; flex-wrap:wrap; gap:5px; }
-#themePanel { display:flex; gap:10px; flex-wrap:wrap; }
-.themeOption { width:30px; height:30px; border-radius:50%; cursor:pointer; border:2px solid #fff; transition:0.2s; }
-.themeOption:hover{ transform:scale(1.2); }
-#myInfoBtn,#resetBtn,#upgradeBtn { padding:6px 12px; border-radius:10px; border:none; cursor:pointer; transition:0.3s; }
-#myInfoBtn{ background:#ff5722; color:#fff; } #myInfoBtn:hover{ background:#e64a19; }
-#resetBtn{ background:#f44336; color:#fff; } #resetBtn:hover{ background:#d32f2f; }
-#upgradeBtn{ background:#ffeb3b; color:#000; } #upgradeBtn:hover{ background:#fdd835; }
-#messages{ flex:1 1 auto; padding:15px; overflow-y:auto; background:#f9f9f9; display:flex; flex-direction:column; gap:10px; position:relative; scroll-behavior:smooth; transition:background 0.5s; }
-.message{ max-width:80%; padding:10px 15px; border-radius:20px; word-wrap:break-word; position:relative; animation:fadeInSlide 0.4s ease forwards; }
-.user{ align-self:flex-end; background:#d1e7ff; color:#0b3d91; }
-.bot{ align-self:flex-start; background:#e2f7e1; color:#2e7d32; }
-.timestamp{ font-size:10px; color:#888; margin-top:3px; text-align:right; }
-#inputContainer{ display:flex; border-top:1px solid #ddd; padding:10px; background:#fff; align-items:center; gap:5px; }
-#userInput{ flex:1; padding:10px 15px; border-radius:25px; border:1px solid #ccc; outline:none; }
-#sendBtn,#voiceBtn,#emojiBtn{ padding:10px 15px; border-radius:50%; border:none; cursor:pointer; transition:0.3s; }
-#sendBtn{ background:#2575fc; color:#fff; } #voiceBtn{ background:#4caf50; color:#fff; } #emojiBtn{ background:#ff9800; color:#fff; }
-#sendBtn:hover{ background:#6a11cb; } #voiceBtn:hover{ background:#388e3c; } #emojiBtn:hover{ background:#fb8c00; }
-@keyframes fadeInSlide{ from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
-#typingIndicator{ display:none; font-style:italic; color:#555; margin-left:5px; }
+body{margin:0;padding:0;font-family:'Roboto',sans-serif;overflow:hidden;display:flex;justify-content:center;align-items:center;height:100vh;background:linear-gradient(to right,#6a11cb,#2575fc);}
+#introOverlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:1000;display:flex;justify-content:center;align-items:center;flex-direction:column;overflow:hidden;}
+#introCanvas{position:absolute;top:0;left:0;width:100%;height:100%;}
+#introText{color:#0ff;font-size:3em;font-weight:bold;letter-spacing:2px;text-align:center;text-shadow:0 0 10px #0ff,0 0 20px #0ff,0 0 30px #0ff;}
+#introSubtitle{color:#fff;font-size:1.5em;margin-top:20px;opacity:0;}
+#chatContainer{width:100%;max-width:550px;height:90vh;background:#fff;border-radius:15px;box-shadow:0 10px 25px rgba(0,0,0,0.2);display:flex;flex-direction:column;overflow:hidden;position:relative;display:none;}
+#topPanel{display:flex;justify-content:space-between;align-items:center;background:#eee;padding:10px;border-bottom:1px solid #ddd;flex-wrap:wrap;gap:5px;}
+#themePanel{display:flex;gap:10px;flex-wrap:wrap;}
+.themeOption{width:30px;height:30px;border-radius:50%;cursor:pointer;border:2px solid #fff;transition:0.2s;}
+.themeOption:hover{transform:scale(1.2);}
+#myInfoBtn,#resetBtn,#upgradeBtn{padding:6px 12px;border-radius:10px;border:none;cursor:pointer;transition:0.3s;}
+#myInfoBtn{background:#ff5722;color:#fff;}#myInfoBtn:hover{background:#e64a19;}
+#resetBtn{background:#f44336;color:#fff;}#resetBtn:hover{background:#d32f2f;}
+#upgradeBtn{background:#ffeb3b;color:#000;}#upgradeBtn:hover{background:#fdd835;}
+#messages{flex:1 1 auto;padding:15px;overflow-y:auto;background:#f9f9f9;display:flex;flex-direction:column;gap:10px;position:relative;scroll-behavior:smooth;transition:background 0.5s;}
+.message{max-width:80%;padding:10px 15px;border-radius:20px;word-wrap:break-word;position:relative;animation:fadeInSlide 0.4s ease forwards;}
+.user{align-self:flex-end;background:#d1e7ff;color:#0b3d91;}
+.bot{align-self:flex-start;background:#e2f7e1;color:#2e7d32;}
+.timestamp{font-size:10px;color:#888;margin-top:3px;text-align:right;}
+#inputContainer{display:flex;border-top:1px solid #ddd;padding:10px;background:#fff;align-items:center;gap:5px;}
+#userInput{flex:1;padding:10px 15px;border-radius:25px;border:1px solid #ccc;outline:none;}
+#sendBtn,#voiceBtn,#emojiBtn{padding:10px 15px;border-radius:50%;border:none;cursor:pointer;transition:0.3s;}
+#sendBtn{background:#2575fc;color:#fff;}#voiceBtn{background:#4caf50;color:#fff;}#emojiBtn{background:#ff9800;color:#fff;}
+#sendBtn:hover{background:#6a11cb;}#voiceBtn:hover{background:#388e3c;}#emojiBtn:hover{background:#fb8c00;}
+@keyframes fadeInSlide{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+#typingIndicator{display:none;font-style:italic;color:#555;margin-left:5px;}
 </style>
 </head>
 <body>
@@ -109,6 +85,7 @@ function fadeOutIntro(){
   introOverlay.style.opacity=0; introOverlay.style.transform='scale(1.2)';
   setTimeout(()=>{ introOverlay.style.display='none'; document.getElementById('chatContainer').style.display='flex'; loadChatHistory(); },1000);
 }
+
 // ===== Particle Background =====
 const canvas=document.getElementById('introCanvas');
 const ctx=canvas.getContext('2d');
@@ -162,7 +139,7 @@ async function sendMessage(){
     typingIndicator.style.display='none'; 
     botDiv.textContent=''; 
     let j=0; const txt=data.answer; 
-    const delay=upgraded?5:20; // faster response if upgraded
+    const delay=upgraded?5:20;
     const timer=setInterval(()=>{ botDiv.textContent+=txt.charAt(j); scrollToBottom(); j++; if(j>=txt.length)clearInterval(timer); },delay); 
     const ts=document.createElement('div'); ts.classList.add('timestamp'); ts.textContent=new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); botDiv.appendChild(ts); 
   }catch(err){ typingIndicator.style.display='none'; botDiv.textContent='Bot: Something went wrong 😔';}
@@ -174,8 +151,6 @@ emojiPicker.addEventListener('emoji-click', e=>{ input.value+=e.detail.unicode; 
 function setTheme(c1,c2){ document.body.style.background=`linear-gradient(to right, ${c1}, ${c2})`; }
 myInfoBtn.addEventListener('click',()=>{ const savedMessages=JSON.parse(localStorage.getItem('chatMessages')||'[]'); const lastMessage=savedMessages.length?savedMessages[savedMessages.length-1].text:'No messages yet'; const info=`Name: Suraj Sharma\nUID: 8080519000\nKey: ZORVAXOxAI\nLast Message: "${lastMessage}"\nTotal Messages: ${savedMessages.length}`; addMessage('bot',info);});
 resetBtn.addEventListener('click',()=>{ if(confirm("Are you sure you want to reset all chats and settings?")){ localStorage.clear(); location.reload(); }});
-
-// ===== Upgrade Button =====
 upgradeBtn.addEventListener('click',()=>{
   if(!upgraded){
     if(confirm("Upgrade for ₹9 to enhance chat experience?")){
@@ -183,11 +158,8 @@ upgradeBtn.addEventListener('click',()=>{
       messages.style.background='linear-gradient(45deg,#ffe082,#ffca28)';
       addMessage('bot','🎉 Congratulations! Your chat experience is now upgraded! Fast response + animated background applied.');
     }
-  } else {
-    alert("You already upgraded! Enjoy the premium experience 😎");
-  }
+  } else { alert("You already upgraded! Enjoy the premium experience 😎"); }
 });
-
 sendBtn.addEventListener('click',sendMessage);
 input.addEventListener('keydown', e=>{ if(e.key==='Enter') sendMessage(); });
 </script>
