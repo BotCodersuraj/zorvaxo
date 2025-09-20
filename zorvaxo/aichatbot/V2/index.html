@@ -31,14 +31,14 @@ body{margin:0;padding:0;font-family:'Roboto',sans-serif;background:linear-gradie
 #sendBtn:hover{background:#6a11cb;} #voiceBtn:hover{background:#388e3c;} #emojiBtn:hover{background:#fb8c00;}
 @keyframes fadeInSlide{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 #typingIndicator{display:none;font-style:italic;color:#555;margin-left:5px;}
-/* Premium modal */
 #premiumModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);justify-content:center;align-items:center;z-index:1000;}
 #premiumContent{background:#fff;padding:20px;border-radius:15px;max-width:400px;text-align:center;box-shadow:0 10px 25px rgba(0,0,0,0.3);}
 #premiumContent button{margin-top:10px;}
+#introModal{display:flex;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;flex-direction:column;color:#fff;font-size:1.5em;z-index:1000;}
+#introModal h1{animation:fadeInIntro 2s ease forwards;}@keyframes fadeInIntro{0%{opacity:0;transform:translateY(-50px);}100%{opacity:1;transform:translateY(0);}}
 </style>
 </head>
-<body>
-<div id="chatContainer">
+<body><div id="introModal"><h1>Made by Suraj Sharma 🚀</h1><p>Welcome to Zorvaxo AI Ultra Chat Pro</p></div><div id="chatContainer">
 <div id="topPanel">
 <div id="themePanel">
 <div class="themeOption" style="background:#6a11cb" onclick="setTheme('#6a11cb','#2575fc')"></div>
@@ -61,17 +61,27 @@ body{margin:0;padding:0;font-family:'Roboto',sans-serif;background:linear-gradie
 <button id="sendBtn">➡️</button>
 </div>
 <emoji-picker id="emojiPicker" style="display:none; position:absolute; bottom:70px; right:20px;"></emoji-picker>
+</div><div id="premiumModal">
+<div id="premiumContent">
+<h2>Premium Status</h2>
+<p id="premiumDetails"></p>
+<button onclick="closePremiumModal()">Close</button>
 </div>
-<div id="premiumModal"><div id="premiumContent"><h2>Premium Status</h2><p id="premiumDetails"></p><button onclick="closePremiumModal()">Close</button></div></div>
-<script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@1.5.3/dist/emoji-picker.min.js"></script>
-<script>
-const input=document.getElementById("userInput"),sendBtn=document.getElementById("sendBtn"),voiceBtn=document.getElementById("voiceBtn"),emojiBtn=document.getElementById("emojiBtn"),messages=document.getElementById("messages"),emojiPicker=document.getElementById("emojiPicker"),typingIndicator=document.getElementById("typingIndicator"),myInfoBtn=document.getElementById("myInfoBtn"),resetBtn=document.getElementById("resetBtn"),upgradeBtn=document.getElementById("upgradeBtn"),premiumInfoBtn=document.getElementById("premiumInfoBtn"),premiumModal=document.getElementById("premiumModal"),premiumDetails=document.getElementById("premiumDetails");
-let isPremium=JSON.parse(localStorage.getItem('isPremium')||'false'),premiumExpiry=localStorage.getItem('premiumExpiry')||null;
+</div><script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@1.5.3/dist/emoji-picker.min.js"></script><script>
+const input=document.getElementById("userInput"),sendBtn=document.getElementById("sendBtn"),voiceBtn=document.getElementById("voiceBtn"),emojiBtn=document.getElementById("emojiBtn"),messages=document.getElementById("messages"),emojiPicker=document.getElementById("emojiPicker"),typingIndicator=document.getElementById("typingIndicator"),myInfoBtn=document.getElementById("myInfoBtn"),resetBtn=document.getElementById("resetBtn"),upgradeBtn=document.getElementById("upgradeBtn"),premiumInfoBtn=document.getElementById("premiumInfoBtn"),premiumModal=document.getElementById("premiumModal"),premiumDetails=document.getElementById("premiumDetails"),introModal=document.getElementById("introModal");
+
+let isPremium=JSON.parse(localStorage.getItem('isPremium')||'false');
+let premiumExpiry=localStorage.getItem('premiumExpiry')||null;
+
 function scrollBottom(){messages.scrollTop=messages.scrollHeight;}
-function addMessage(sender,text){const time=new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});const msgDiv=document.createElement('div');msgDiv.classList.add('message',sender);msgDiv.innerHTML=`${sender==='user'?'You':'Bot'}: ${text}<div class="timestamp">${time}</div>`;messages.appendChild(msgDiv);scrollBottom();const saved=JSON.parse(localStorage.getItem('chatMessages')||'[]');saved.push({sender,text});if(saved.length>50)saved.shift();localStorage.setItem('chatMessages',JSON.stringify(saved));}
+function addMessage(sender,text){const time=new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});const msgDiv=document.createElement('div');msgDiv.classList.add('message',sender);msgDiv.innerHTML=`${sender==='user'?'You':'Bot'}: ${text}<div class='timestamp'>${time}</div>`;messages.appendChild(msgDiv);scrollBottom();const saved=JSON.parse(localStorage.getItem('chatMessages')||'[]');saved.push({sender,text});if(saved.length>50)saved.shift();localStorage.setItem('chatMessages',JSON.stringify(saved));}
+
 function loadChatHistory(){const saved=JSON.parse(localStorage.getItem('chatMessages')||'[]');saved.forEach(m=>addMessage(m.sender,m.text));scrollBottom();}
+
 async function sendMessage(){const q=input.value.trim();if(!q)return;addMessage('user',q);input.value='';typingIndicator.style.display='block';const botDiv=document.createElement('div');botDiv.classList.add('message','bot');messages.appendChild(botDiv);scrollBottom();try{const response=await fetch(`https://zorvaxo.vercel.app/api/main/ai-chatgpt?text=${encodeURIComponent(q)}&key=ZORVAXOxAI`);const data=await response.json();typingIndicator.style.display='none';botDiv.textContent='';typeEffect(botDiv,data.answer);const ts=document.createElement('div');ts.classList.add('timestamp');ts.textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});botDiv.appendChild(ts);const saved=JSON.parse(localStorage.getItem('chatMessages')||'[]');saved.push({sender:'bot',text:data.answer});if(saved.length>50)saved.shift();localStorage.setItem('chatMessages',JSON.stringify(saved));}catch(err){typingIndicator.style.display='none';botDiv.textContent='Bot: Something went wrong 😔';}}
+
 function typeEffect(el,text,delay=20,callback){let i=0;el.textContent='';const t=setInterval(()=>{el.textContent+=text.charAt(i);scrollBottom();i++;if(i>=text.length){clearInterval(t);if(callback)callback();}},isPremium?10:20);}
+
 voiceBtn.addEventListener('click',()=>{const r=new(window.SpeechRecognition||window.webkitSpeechRecognition)();r.lang='en-US';r.start();r.onresult=e=>{input.value=e.results[0][0].transcript};});
 emojiBtn.addEventListener('click',()=>{emojiPicker.style.display=emojiPicker.style.display==='none'?'block':'none';});
 emojiPicker.addEventListener('emoji-click',e=>{input.value+=e.detail.unicode;});
@@ -79,11 +89,6 @@ sendBtn.addEventListener('click',sendMessage);input.addEventListener('keydown',e
 function setTheme(c1,c2){document.body.style.background=`linear-gradient(to right, ${c1}, ${c2})`;}
 myInfoBtn.addEventListener('click',()=>{const saved=JSON.parse(localStorage.getItem('chatMessages')||'[]');const last=saved.length?saved[saved.length-1].text:'No messages yet';addMessage('bot',`Name: Suraj Sharma\nUID:8080519000\nLast Msg:"${last}"\nTotal Messages:${saved.length}`);});
 resetBtn.addEventListener('click',()=>{if(confirm('Reset all chats?')){localStorage.setItem('chatMessages',JSON.stringify([]));loadChatHistory();}});
-upgradeBtn.addEventListener('click',()=>{if(!isPremium){if(confirm('Pay ₹9 to upgrade for 7 days premium?')){isPremium=true;const expiry=new Date();expiry.setDate(expiry.getDate()+7);premiumExpiry=expiry.toISOString();localStorage.setItem('isPremium',true);localStorage.setItem('premiumExpiry',premiumExpiry);alert('Premium activated! Faster AI responses & effects unlocked.');}}});
-premiumInfoBtn.addEventListener('click',()=>{showPremiumInfo();});
-function showPremiumInfo(){if(isPremium){premiumDetails.textContent=`Premium Active\nExpiry Date: ${new Date(premiumExpiry).toLocaleString()}`;}else{premiumDetails.textContent='No Premium Active';}premiumModal.style.display='flex';}
-function closePremiumModal(){premiumModal.style.display='none';}
-window.onload=()=>{loadChatHistory();if(isPremium){if(new Date(premiumExpiry)<new Date()){isPremium=false;localStorage.setItem('isPremium',false);localStorage.removeItem('premiumExpiry');}}}
-</script>
-</body>
-</html>
+
+upgradeBtn.addEventListener('click',()=>{if(!isPremium){isPremium=true;const expiry=new Date();expiry.setDate(expiry.getDate()+7);premiumExpiry=expiry.toISOString();localStorage.setItem('isPremium',true);localStorage.setItem('premiumExpiry',premiumExpiry);alert('🎉 Premium activated for 7 days!');}});
+premiumInfoBtn.addEventListener('click',()=>{if(isPremium){premiumDetails.innerText=`Premium active until: ${new Date(premiumExpiry
