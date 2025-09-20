@@ -2,25 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zorvaxo Messenger - Chat</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <div class="chat-container">
-    <!-- Sidebar -->
     <div class="sidebar">
-      <h2>Users</h2>
+      <h3>Users</h3>
       <ul id="userList"></ul>
-      <button onclick="logout()">Logout</button>
     </div>
-
-    <!-- Chat Area -->
     <div class="chat-area">
-      <div id="chatHeader">Select a user to chat</div>
-      <div id="chatMessages"></div>
-      <div class="chat-input">
-        <input type="text" id="chatText" placeholder="Type a message...">
+      <div id="chatHeader"></div>
+      <div id="messages"></div>
+      <div class="input-area">
+        <input type="text" id="msgInput" placeholder="Type a message...">
         <button onclick="sendMessage()">Send</button>
       </div>
     </div>
