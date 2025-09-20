@@ -1,27 +1,117 @@
-import { motion } from "framer-motion";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Official Website - Suraj bhai</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Roboto', sans-serif; color: white; background: linear-gradient(135deg, #2a2a72, #009ffd); }
 
-export default function Home() {
-  return (
-    <div className="bg-gradient-to-r from-blue-900 to-blue-400 min-h-screen text-white flex flex-col">
-      <Navbar />
-      <motion.div
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-        className="flex-1 flex flex-col justify-center items-center"
-      >
-        <h1 className="text-5xl md:text-6xl font-bold mb-4">🚀 Welcome to My Official Website</h1>
-        <p className="text-xl md:text-2xl mb-6">Made with ❤️ by Suraj bhai</p>
-        <a
-          href="https://t.me/Suraj_Offiacl"
-          className="bg-white text-blue-500 font-bold py-3 px-6 rounded-xl hover:bg-gray-100 transition"
-        >
-          Join My Telegram
-        </a>
-      </motion.div>
-      <Footer />
+    /* Navbar */
+    nav { width: 100%; padding: 20px 50px; position: fixed; top:0; left:0; background: rgba(0,0,0,0.4); display: flex; justify-content: space-between; align-items: center; z-index: 100; }
+    nav a { color: white; margin-left: 25px; text-decoration: none; font-weight: bold; transition: 0.3s; }
+    nav a:hover { color: #f2f2f2; }
+
+    /* Hero */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 20px; }
+    .hero h1 { font-size: 3rem; margin-bottom: 20px; animation: slideDown 1s ease forwards; opacity: 0; }
+    .hero p { font-size: 1.5rem; margin-bottom: 30px; animation: fadeIn 2s ease forwards; opacity: 0; }
+    .btn { padding: 15px 30px; background: white; color: #009ffd; font-weight: bold; border-radius: 12px; text-decoration: none; transition: 0.3s; }
+    .btn:hover { background: #f2f2f2; }
+
+    @keyframes slideDown { 0% { transform: translateY(-50px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+    @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+
+    /* Features */
+    #features { padding: 100px 20px; background: rgba(255,255,255,0.05); text-align: center; }
+    #features h2 { font-size: 2.5rem; margin-bottom: 50px; }
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+    .feature { background: rgba(255,255,255,0.1); padding: 30px; border-radius: 20px; transition: 0.3s; }
+    .feature:hover { background: rgba(255,255,255,0.2); transform: translateY(-10px); }
+    .feature h3 { margin-bottom: 15px; font-size: 1.5rem; }
+
+    /* Footer */
+    footer { padding: 40px 20px; text-align: center; background: rgba(0,0,0,0.4); margin-top: 50px; }
+    footer a { color: white; text-decoration: underline; }
+
+    /* Responsive */
+    @media(max-width:768px){ .hero h1{font-size:2.5rem;} .hero p{font-size:1.2rem;} }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav>
+    <h2>Suraj Official</h2>
+    <div>
+      <a href="#features">Features</a>
+      <a href="#contact">Contact</a>
     </div>
-  );
-}
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>🚀 Welcome to My Official Website</h1>
+    <p>Made with ❤️ by Suraj bhai</p>
+    <a href="https://t.me/Suraj_Offiacl" class="btn">Join My Telegram</a>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features">
+    <h2>Features</h2>
+    <div class="feature-grid">
+      <div class="feature">
+        <h3>Fast & Responsive</h3>
+        <p>Optimized for all devices with smooth animations.</p>
+      </div>
+      <div class="feature">
+        <h3>Telegram Integration</h3>
+        <p>Join my Telegram channel directly from the website.</p>
+      </div>
+      <div class="feature">
+        <h3>Interactive UI</h3>
+        <p>Modern, clean, and animated user interface for best experience.</p>
+      </div>
+      <div class="feature">
+        <h3>Fully Customizable</h3>
+        <p>Easy to edit and scale as your business grows.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" style="padding:100px 20px; text-align:center;">
+    <h2>Contact Me</h2>
+    <p>Email: <a href="mailto:suraj@example.com">suraj@example.com</a></p>
+    <p>Telegram: <a href="https://t.me/Suraj_Offiacl">@Suraj_Offiacl</a></p>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Suraj bhai. All rights reserved.</p>
+    <p>Follow me on <a href="https://t.me/Suraj_Offiacl">Telegram</a></p>
+  </footer>
+
+  <!-- JS for simple fade-in on scroll -->
+  <script>
+    const faders = document.querySelectorAll('.feature');
+    const appearOptions = { threshold: 0.3, rootMargin: "0px 0px -50px 0px" };
+    const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll){
+      entries.forEach(entry => {
+        if(!entry.isIntersecting){return;}
+        entry.target.style.transform = "translateY(0)";
+        entry.target.style.opacity = "1";
+        appearOnScroll.unobserve(entry.target);
+      });
+    }, appearOptions);
+    faders.forEach(fader => {
+      fader.style.transform = "translateY(20px)";
+      fader.style.opacity = "0";
+      appearOnScroll.observe(fader);
+    });
+  </script>
+</body>
+</html>
