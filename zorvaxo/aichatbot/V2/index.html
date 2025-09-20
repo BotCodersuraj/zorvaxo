@@ -24,6 +24,7 @@ body {
 #chatContainer {
   width: 100%;
   max-width: 550px;
+  height: 90vh; /* fixed height for scroll */
   background: #fff;
   border-radius: 15px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.2);
@@ -76,7 +77,7 @@ body {
 #resetBtn:hover { background: #d32f2f; }
 
 #messages {
-  flex: 1;
+  flex: 1 1 auto; /* allow grow/shrink */
   padding: 15px;
   overflow-y: auto;
   background: #f9f9f9;
@@ -84,6 +85,7 @@ body {
   flex-direction: column;
   gap: 10px;
   position: relative;
+  scroll-behavior: smooth;
 }
 
 .message {
@@ -224,10 +226,8 @@ function addMessage(sender, text) {
   messages.appendChild(messageDiv);
   scrollToBottom();
 
-  // Floating emojis if bot happy
   if(sender==='bot' && (text.includes('😄') || text.includes('🎉'))) showFloatingEmoji('🎉');
 
-  // Save to localStorage
   const savedMessages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
   savedMessages.push({sender,text});
   if(savedMessages.length > 50) savedMessages.shift();
@@ -282,7 +282,6 @@ async function sendMessage() {
     ts.textContent = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
     botDiv.appendChild(ts);
 
-    // Save bot response
     const savedMessages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
     savedMessages.push({sender:'bot', text:data.answer});
     if(savedMessages.length > 50) savedMessages.shift();
